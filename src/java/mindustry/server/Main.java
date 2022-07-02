@@ -27,8 +27,6 @@ public class Main implements ApplicationListener
 
     public static void main(String[] args)
     {
-        input is not mixed with output!
-        Timer.schedule(() => {Log.info(1)}, 0, 1).run();
         Runtime.getRuntime()
             .addShutdownHook(
                 new Thread(Main::shutdown)
