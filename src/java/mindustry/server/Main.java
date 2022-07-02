@@ -33,6 +33,7 @@ public class Main implements ApplicationListener
 
         Main.args = args;
         initServer();
+        
     }
 
     @Override

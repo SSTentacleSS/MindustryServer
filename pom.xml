@@ -23,11 +23,11 @@
     <maven.compiler.source>8</maven.compiler.source>
     <maven.compiler.target>8</maven.compiler.target>
 
-    <properies.mindustryVersion>135.2</properies.mindustryVersion>
+    <properies.mindustryVersion>135</properies.mindustryVersion>
     <properies.shortVersion>7</properies.shortVersion>
 
-    <mindustryVersion>261714d395</mindustryVersion>
-    <arcVersion>955745ec79</arcVersion>
+    <mindustryVersion>v${properies.mindustryVersion}</mindustryVersion>
+    <arcVersion>v${properies.mindustryVersion}</arcVersion>
 
     <finalName>server</finalName>
     <mainClass>mindustry.server.Main</mainClass>
