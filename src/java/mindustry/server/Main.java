@@ -6,6 +6,7 @@ import arc.Events;
 import arc.backend.headless.HeadlessApplication;
 import arc.util.Log;
 import arc.util.Strings;
+import arc.util.Timer;
 import mindustry.Vars;
 import mindustry.core.Logic;
 import mindustry.core.NetServer;
@@ -26,6 +27,8 @@ public class Main implements ApplicationListener
 
     public static void main(String[] args)
     {
+        input is not mixed with output!
+        Timer.schedule(() => {Log.info(1)}, 0, 1).run();
         Runtime.getRuntime()
             .addShutdownHook(
                 new Thread(Main::shutdown)
