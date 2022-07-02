@@ -10,22 +10,27 @@ import java.util.concurrent.Executors;
 import org.jline.reader.LineReader;
 import org.jline.reader.LineReaderBuilder;
 import org.jline.reader.UserInterruptException;
+import org.jline.reader.impl.completer.SystemCompleter;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
 import org.jline.utils.AttributedStyle;
+import org.jline.widget.AutosuggestionWidgets;
 
 import arc.util.Log;
 import arc.util.Log.LogHandler;
 import arc.util.Log.LogLevel;
+import mindustry.server.commands.CommandsCmdRegistry;
 import mindustry.server.utils.Pipe;
 
 public class ProgressiveLogger implements LogHandler
 {
     public static SimpleDateFormat dateFormat = new SimpleDateFormat("[dd-MM-yyyy HH:mm:ss.S]");
+    public volatile String inputPrompt = Colors.applyStyle("[Server] |> ", AttributedStyle.BOLD.foreground(170, 255, 50));
     public ExecutorService executor = Executors.newSingleThreadExecutor();
+    public SystemCompleter systemCompleter = new SystemCompleter();
+    public CommandsCmdRegistry commandsRegistry = new CommandsCmdRegistry();
     public Terminal terminal;
     public LineReader reader;
-    public volatile String inputPrompt = Colors.applyStyle("[Server] |> ", AttributedStyle.BOLD.foreground(170, 255, 50));
 
     public ProgressiveLogger()
     {
@@ -47,6 +52,9 @@ public class ProgressiveLogger implements LogHandler
                 .terminal(terminal)
                 .build();
 
+            AutosuggestionWidgets autosuggestionWidgets = new AutosuggestionWidgets(reader);
+
+            autosuggestionWidgets.enable();
             terminal.enterRawMode();
         } catch (IOException e) {
             Log.err(e);

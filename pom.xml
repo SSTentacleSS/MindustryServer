@@ -31,6 +31,8 @@
 
     <finalName>server</finalName>
     <mainClass>mindustry.server.Main</mainClass>
+
+    <orchid.version>0.21.2</orchid.version>
   </properties>
 
   <dependencies>

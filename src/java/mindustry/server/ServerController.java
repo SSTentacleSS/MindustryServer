@@ -30,6 +30,9 @@ import java.time.*;
 import java.time.format.*;
 import java.util.concurrent.CompletableFuture;
 
+import org.jline.widget.TailTipWidgets;
+import org.jline.widget.TailTipWidgets.TipType;
+
 import static arc.util.Log.*;
 import static mindustry.Vars.*;
 
@@ -40,7 +43,7 @@ public class ServerController implements ApplicationListener{
     protected static DateTimeFormatter dateTime = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm:ss"),
         autosaveDate = DateTimeFormatter.ofPattern("MM-dd-yyyy_HH-mm-ss");
 
-    public final CommandHandler handler = new CommandHandler("");
+    public static final CommandHandler handler = new CommandHandler("");
     public final Fi logFolder = Core.settings.getDataDirectory().child("logs/");
 
     private boolean inExtraRound;
@@ -79,6 +82,12 @@ public class ServerController implements ApplicationListener{
         Time.setDeltaProvider(() -> Core.graphics.getDeltaTime() * 60f);
 
         registerCommands();
+
+        handler.getCommandList().forEach(Main.IO.commandsRegistry::registerCommand);
+
+        TailTipWidgets tailtipWidgets = new TailTipWidgets(Main.IO.reader, Main.IO.commandsRegistry.tailTips, 0, TipType.TAIL_TIP);
+        
+        tailtipWidgets.enable();
 
         Core.app.post(() -> {
             //try to load auto-update save if possible
@@ -256,9 +265,7 @@ public class ServerController implements ApplicationListener{
         });
 
         handler.register("exit", "Exit the server application.", arg -> {
-            info("Shutting down server.");
-            net.dispose();
-            Core.app.exit();
+            System.exit(0);
         });
 
         handler.register("stop", "Stop hosting the server.", arg -> {

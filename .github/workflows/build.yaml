@@ -22,6 +22,12 @@ jobs:
           step: restore
       - name: Build Project
         run: mvn package
+      - uses: dev-drprasad/delete-tag-and-release@v0.2.0
+        with:
+          delete_release: true
+          tag_name: ${{ github.ref_name }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Release
         uses: actions/create-release@v1
         id: create_release
@@ -29,7 +35,7 @@ jobs:
           draft: false
           prerelease: false
           release_name: ${{ github.ref_name }}
-          tag_name: ${{ github.ref }}
+          tag_name: ${{ github.ref_name }}
         env:
           GITHUB_TOKEN: ${{ github.token }}
       - name: Upload Server Jar
