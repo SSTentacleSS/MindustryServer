@@ -6,7 +6,6 @@ import arc.Events;
 import arc.backend.headless.HeadlessApplication;
 import arc.util.Log;
 import arc.util.Strings;
-import arc.util.Timer;
 import mindustry.Vars;
 import mindustry.core.Logic;
 import mindustry.core.NetServer;
