@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>mindustry</groupId>
+  <artifactId>server</artifactId>
+  <version>1.0</version>
+
+  <name>server</name>
+  <url>https://github.com/SSTentacleSS/MindustryServer</url>
+
+  <repositories>
+		<repository>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
+		</repository>
+	</repositories>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>8</maven.compiler.source>
+    <maven.compiler.target>8</maven.compiler.target>
+
+    <properies.mindustryVersion>135.2</properies.mindustryVersion>
+    <properies.shortVersion>7</properies.shortVersion>
+
+    <mindustryVersion>261714d395</mindustryVersion>
+    <arcVersion>955745ec79</arcVersion>
+
+    <finalName>server</finalName>
+    <mainClass>mindustry.server.Main</mainClass>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.jline</groupId>
+      <artifactId>jline</artifactId>
+      <version>3.21.0</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>com.github.Anuken.Mindustry</groupId>
+      <artifactId>core</artifactId>
+      <version>${mindustryVersion}</version> <!-- TODO: Change to ${mindustryVersion}, when abuben release v135.3 -->
+    </dependency>
+
+    <dependency>
+	    <groupId>com.github.Anuken.Arc</groupId>
+	    <artifactId>arc-core</artifactId>
+	    <version>${arcVersion}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.Anuken.Arc</groupId>
+      <artifactId>arcnet</artifactId>
+      <version>${arcVersion}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.Anuken</groupId>
+      <artifactId>rhino</artifactId>
+      <version>73a812444ac388ac2d94013b5cadc8f70b7ea027</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.Anuken.Arc</groupId>
+      <artifactId>freetype</artifactId>
+      <version>${arcVersion}</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.Anuken.Arc</groupId>
+      <artifactId>g3d</artifactId>
+      <version>${arcVersion}</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.Anuken.Arc</groupId>
+      <artifactId>arcnet</artifactId>
+      <version>${arcVersion}</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.Anuken.Arc</groupId>
+      <artifactId>backend-headless</artifactId>
+      <version>${arcVersion}</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <finalName>${finalName}-lib</finalName>
+    <sourceDirectory>src/java</sourceDirectory>
+    <resources>
+      <resource>
+        <directory>src/resources</directory>
+        <filtering>true</filtering>
+        <includes>
+          <include>version.properties</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>src/resources</directory>
+        <filtering>false</filtering>
+        <excludes>
+          <exclude>version.properties</exclude>
+        </excludes>
+      </resource>
+      <resource>
+        <directory>src/resources</directory>
+      </resource>
+    </resources>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.3.0</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <finalName>${finalName}</finalName>
+
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <mainClass>${mainClass}</mainClass>
+                </transformer>
+              </transformers>
+              <shadedArtifactAttached>true</shadedArtifactAttached>
+
+              <filters>
+                <filter>
+                  <artifact>*:*</artifact>
+                  <excludes>
+                    <exclude>META-INF/*.MF</exclude>
+                  </excludes>
+                </filter>
+              </filters>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
