@@ -1,3 +1,3 @@
-package mindustry.server.events;
+package mindustry.server.event;
 
 public class ServerCloseEvent {}

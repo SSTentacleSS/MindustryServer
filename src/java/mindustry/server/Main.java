@@ -12,10 +12,12 @@ import mindustry.core.NetServer;
 import mindustry.core.Platform;
 import mindustry.ctype.Content;
 import mindustry.game.EventType;
+import mindustry.game.Gamemode;
+import mindustry.maps.Maps.ShuffleMode;
 import mindustry.mod.Mod;
 import mindustry.mod.Mods.LoadedMod;
 import mindustry.net.Net;
-import mindustry.server.events.ServerCloseEvent;
+import mindustry.server.event.ServerCloseEvent;
 import mindustry.server.log.ProgressiveLogger;
 
 public class Main implements ApplicationListener {
@@ -44,6 +46,8 @@ public class Main implements ApplicationListener {
 		Vars.content.createModContent();
 		Vars.content.init();
 
+		Vars.customMapDirectory.mkdirs();
+
 		if (Vars.mods.hasContentErrors()) {
 			Log.err("Error occurred loading mod content:");
 
@@ -58,6 +62,7 @@ public class Main implements ApplicationListener {
 						.replace("\n", " ")
 				);
 			}
+
 			System.exit(1);
 		}
 
@@ -88,6 +93,23 @@ public class Main implements ApplicationListener {
 		Events.fire(new EventType.ServerLoadEvent());
 	}
 
+	public void initStateController() {
+		Vars.maps.setShuffleMode(
+			valueOf(
+				ShuffleMode.values(),
+				Core.settings.getString("shufflemode"),
+				ShuffleMode.builtin
+			)
+		);
+
+		StateController.lastMode =
+			valueOf(
+				Gamemode.values(),
+				Core.settings.getString("lastServerMode", "survival"),
+				Gamemode.survival
+			);
+	}
+
 	public static void initServer() {
 		if (Vars.net != null) Vars.net.dispose();
 
@@ -105,5 +127,19 @@ public class Main implements ApplicationListener {
 		Vars.net.dispose();
 		IO.executor.shutdown();
 		Core.app.exit();
+	}
+
+	private static <T extends Enum<T>> T valueOf(
+		T[] values,
+		String name,
+		T defaultValue
+	) {
+		for (T value : values) {
+			if (value.name().equals(name)) {
+				return value;
+			}
+		}
+
+		return defaultValue;
 	}
 }

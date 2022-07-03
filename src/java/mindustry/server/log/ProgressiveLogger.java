@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import mindustry.server.commands.CommandsCmdRegistry;
+import mindustry.server.command.CommandsRegistry;
 import mindustry.server.utils.Pipe;
 import org.jline.reader.LineReader;
 import org.jline.reader.LineReaderBuilder;
@@ -18,7 +18,6 @@ import org.jline.reader.impl.completer.SystemCompleter;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
 import org.jline.utils.AttributedStyle;
-import org.jline.widget.AutosuggestionWidgets;
 
 public class ProgressiveLogger implements LogHandler {
 	public static SimpleDateFormat dateFormat = new SimpleDateFormat(
@@ -30,7 +29,7 @@ public class ProgressiveLogger implements LogHandler {
 	);
 	public ExecutorService executor = Executors.newSingleThreadExecutor();
 	public SystemCompleter systemCompleter = new SystemCompleter();
-	public CommandsCmdRegistry commandsRegistry = new CommandsCmdRegistry();
+	public CommandsRegistry commandsRegistry = new CommandsRegistry("");
 	public Terminal terminal;
 	public LineReader reader;
 
@@ -49,12 +48,6 @@ public class ProgressiveLogger implements LogHandler {
 					.build();
 
 			reader = LineReaderBuilder.builder().terminal(terminal).build();
-
-			AutosuggestionWidgets autosuggestionWidgets = new AutosuggestionWidgets(
-				reader
-			);
-
-			autosuggestionWidgets.enable();
 			terminal.enterRawMode();
 		} catch (IOException e) {
 			Log.err(e);

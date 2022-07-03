@@ -1,7 +1,6 @@
-package mindustry.server.commands;
+package mindustry.server.command;
 
-import arc.util.CommandHandler.Command;
-import arc.util.CommandHandler.CommandParam;
+import arc.util.CommandHandler;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -14,9 +13,27 @@ import org.jline.console.CmdDesc;
 import org.jline.utils.AttributedString;
 import org.jline.utils.AttributedStyle;
 
-public class CommandsCmdRegistry {
+public class CommandsRegistry extends CommandHandler {
+
+	public CommandsRegistry(String prefix) {
+		super(prefix);
+	}
+
 	public Map<String, CmdDesc> tailTips = new HashMap<>();
 	public List<Command> registeredCommands = new ArrayList<>();
+
+	@Override
+	public <T> Command register(
+		String text,
+		String params,
+		String description,
+		CommandRunner<T> runner
+	) {
+		Command command = super.register(text, params, description, runner);
+		registerCommand(command);
+
+		return command;
+	}
 
 	public void registerCommand(Command command) {
 		List<String> parameters = new ArrayList<>();
@@ -26,10 +43,7 @@ public class CommandsCmdRegistry {
 			Pipe
 				.apply(parameter.name)
 				.pipe(text -> text.concat(parameter.variadic ? "..." : ""))
-				.pipe(
-					text ->
-						parameter.optional ? "[" + text + "]" : "<" + text + ">"
-				)
+				.pipe(text -> parameter.optional ? "[" + text + "]" : text)
 				.pipe(text -> parameters.add(text));
 		}
 
@@ -51,5 +65,13 @@ public class CommandsCmdRegistry {
 				new HashMap<>()
 			)
 		);
+	}
+
+	@Override
+	public void removeCommand(String commandName) {
+		tailTips.remove(commandName);
+		registeredCommands.removeIf(command -> command.text == commandName);
+
+		super.removeCommand(commandName);
 	}
 }
