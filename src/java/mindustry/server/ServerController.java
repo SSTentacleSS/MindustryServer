@@ -34,6 +34,17 @@ public class ServerController implements ApplicationListener {
 	public Fi logFolder = Core.settings.getDataDirectory().child("logs/");
 
 	public ServerController(String[] args) {
+		Core.settings.defaults(
+			"bans",
+			"",
+			"admins",
+			"",
+			"shufflemode",
+			"custom",
+			"globalrules",
+			"{reactorExplosions: false, logicUnitBuild: false}"
+		);
+
 		if (Version.build == -1) Log.info("Client checking disabled");
 
 		registerCommands();
