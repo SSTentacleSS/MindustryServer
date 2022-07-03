@@ -25,6 +25,7 @@ import mindustry.net.Packets.*;
 import mindustry.server.StateController;
 import mindustry.type.*;
 
+// TODO: Sort commands by files
 public class BasicCommands implements RegistrableCommand {
 
 	@Override

@@ -29,7 +29,6 @@ import mindustry.server.utils.Pipe;
 import org.jline.widget.TailTipWidgets;
 import org.jline.widget.TailTipWidgets.TipType;
 
-// TODO; Finish and use as the main controller
 public class ServerController implements ApplicationListener {
 	public Fi logFolder = Core.settings.getDataDirectory().child("logs/");
 

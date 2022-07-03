@@ -15,6 +15,7 @@ import mindustry.net.Packets.KickReason;
 import mindustry.net.WorldReloader;
 import mindustry.server.StateController;
 
+// TODO: Rewrite
 public class GameOverEvent implements Listener<EventType.GameOverEvent> {
 
 	@Override

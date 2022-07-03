@@ -12,6 +12,7 @@ import mindustry.net.Administration.Config;
 import mindustry.server.StateController;
 import mindustry.server.log.ProgressiveLogger;
 
+// TODO: Rewrite
 public class TriggerUpdate implements Emitter<EventType.Trigger> {
 
 	@Override
