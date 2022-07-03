@@ -6,7 +6,7 @@
 
   <groupId>mindustry</groupId>
   <artifactId>server</artifactId>
-  <version>1.4-a3</version>
+  <version>1.5</version>
 
   <name>server</name>
   <url>https://github.com/SSTentacleSS/MindustryServer</url>
