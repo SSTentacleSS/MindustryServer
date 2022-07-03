@@ -18,102 +18,92 @@ import mindustry.net.Net;
 import mindustry.server.events.ServerCloseEvent;
 import mindustry.server.log.ProgressiveLogger;
 
-public class Main implements ApplicationListener
-{
-    public static String[] args;
-    public static HeadlessApplication application;
-    public static ProgressiveLogger IO = new ProgressiveLogger();
+public class Main implements ApplicationListener {
+	public static String[] args;
+	public static HeadlessApplication application;
+	public static ProgressiveLogger IO = new ProgressiveLogger();
 
-    public static void main(String[] args)
-    {
-        Runtime.getRuntime()
-            .addShutdownHook(
-                new Thread(Main::shutdown)
-            );
+	public static void main(String[] args) {
+		Runtime.getRuntime().addShutdownHook(new Thread(Main::shutdown));
 
-        Main.args = args;
-        initServer();
-        
-    }
+		Main.args = args;
+		initServer();
+	}
 
-    @Override
-    public void init()
-    {
-        Log.logger = IO;
-        Core.settings.setDataDirectory(Core.files.local("config"));
-        Vars.loadLocales = false;
-        Vars.headless = true;
+	@Override
+	public void init() {
+		Log.logger = IO;
+		Core.settings.setDataDirectory(Core.files.local("config"));
+		Vars.loadLocales = false;
+		Vars.headless = true;
 
-        Vars.loadSettings();
-        Vars.init();
-        Vars.content.createBaseContent();
-        Vars.mods.loadScripts();
-        Vars.content.createModContent();
-        Vars.content.init();
+		Vars.loadSettings();
+		Vars.init();
+		Vars.content.createBaseContent();
+		Vars.mods.loadScripts();
+		Vars.content.createModContent();
+		Vars.content.init();
 
-        if (Vars.mods.hasContentErrors())
-        {
-            Log.err("Error occurred loading mod content:");
+		if (Vars.mods.hasContentErrors()) {
+			Log.err("Error occurred loading mod content:");
 
-            for (LoadedMod mod : Vars.mods.list())
-                if (mod.hasContentErrors())
-                {
-                    Log.err("| &ly[@]", mod.name);
+			for (LoadedMod mod : Vars.mods.list()) if (mod.hasContentErrors()) {
+				Log.err("| &ly[@]", mod.name);
 
-                    for(Content cont : mod.erroredContent)
-                        Log.err(
-                            "| | &y@: &c@",
-                            cont.minfo.sourceFile.name(),
-                            Strings.getSimpleMessage(cont.minfo.baseError)
-                                .replace("\n", " ")
-                        );
-                }
-            System.exit(1);
-        }
+				for (Content cont : mod.erroredContent) Log.err(
+					"| | &y@: &c@",
+					cont.minfo.sourceFile.name(),
+					Strings
+						.getSimpleMessage(cont.minfo.baseError)
+						.replace("\n", " ")
+				);
+			}
+			System.exit(1);
+		}
 
-        Vars.bases.load();
+		Vars.bases.load();
 
-        Core.app.addListener(new ApplicationListener() {
-            public void update() {
-                Vars.asyncCore.begin();
-            }
-        });
+		Core.app.addListener(
+			new ApplicationListener() {
 
-        Core.app.addListener(Vars.logic = new Logic());
-        Core.app.addListener(Vars.netServer = new NetServer());
-        Core.app.addListener(new ServerController(args));
-        Core.app.addListener(new ApplicationListener() {
-            public void update() {
-                Vars.asyncCore.end();
-            }
-        });
+				public void update() {
+					Vars.asyncCore.begin();
+				}
+			}
+		);
 
-        Vars.mods.eachClass(Mod::init);
-        Events.fire(new EventType.ServerLoadEvent());
-    }
+		Core.app.addListener(Vars.logic = new Logic());
+		Core.app.addListener(Vars.netServer = new NetServer());
+		Core.app.addListener(new ServerController(args));
+		Core.app.addListener(
+			new ApplicationListener() {
 
-    public static void initServer()
-    {
-        if (Vars.net != null)
-            Vars.net.dispose();
+				public void update() {
+					Vars.asyncCore.end();
+				}
+			}
+		);
 
-        Vars.platform = new Platform() {};
-        Vars.net = new Net(Vars.platform.getNet());
+		Vars.mods.eachClass(Mod::init);
+		Events.fire(new EventType.ServerLoadEvent());
+	}
 
-        application = new HeadlessApplication(
-            new Main(),
-            Log::err
-        );
-    }
+	public static void initServer() {
+		if (Vars.net != null) Vars.net.dispose();
 
-    public static void shutdown()
-    {
-        Log.info("The server will now be shut down!");
+		Vars.platform = new Platform() {};
+		Vars.net = new Net(Vars.platform.getNet());
 
-        Events.fire(new ServerCloseEvent());
+		application = new HeadlessApplication(new Main(), Log::err);
+	}
 
-        Vars.net.dispose();
-        IO.executor.shutdown();
-        Core.app.exit();
-    }
+	public static void shutdown() {
+		Log.info("The server will now be shut down!");
+
+		Events.fire(new ServerCloseEvent());
+
+		Vars.net.dispose();
+		IO.executor.shutdown();
+		Core.app.exit();
+	}
 }

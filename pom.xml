@@ -82,13 +82,6 @@
 
     <dependency>
       <groupId>com.github.Anuken.Arc</groupId>
-      <artifactId>arcnet</artifactId>
-      <version>${arcVersion}</version>
-      <scope>compile</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>com.github.Anuken.Arc</groupId>
       <artifactId>backend-headless</artifactId>
       <version>${arcVersion}</version>
       <scope>compile</scope>
@@ -150,6 +143,12 @@
             </configuration>
           </execution>
         </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>com.hubspot.maven.plugins</groupId>
+          <artifactId>prettier-maven-plugin</artifactId>
+          <version>0.18</version>
       </plugin>
     </plugins>
   </build>
