@@ -6,15 +6,15 @@ import mindustry.game.EventType;
 
 public class ServerLoadEvent implements Listener<EventType.ServerLoadEvent> {
 
-    @Override
-    public Cons<mindustry.game.EventType.ServerLoadEvent> getListener() {
-        return event -> {
-            Log.info("Server loaded. Type 'help' for help.");
-        };
-    }
+	@Override
+	public Cons<mindustry.game.EventType.ServerLoadEvent> getListener() {
+		return event -> {
+			Log.info("Server loaded. Type 'help' for help.");
+		};
+	}
 
-    @Override
-    public Class<mindustry.game.EventType.ServerLoadEvent> getListenerClass() {
-        return EventType.ServerLoadEvent.class;
-    }
+	@Override
+	public Class<mindustry.game.EventType.ServerLoadEvent> getListenerClass() {
+		return EventType.ServerLoadEvent.class;
+	}
 }
