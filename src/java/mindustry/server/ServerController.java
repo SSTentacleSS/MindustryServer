@@ -23,6 +23,7 @@ import mindustry.server.event.emitter.TriggerUpdate;
 import mindustry.server.event.listener.GameOverEvent;
 import mindustry.server.event.listener.Listener;
 import mindustry.server.event.listener.PlayEvent;
+import mindustry.server.event.listener.ServerLoadEvent;
 import mindustry.server.event.listener.WorldLoadEvent;
 import mindustry.server.utils.Pipe;
 import org.jline.widget.TailTipWidgets;
@@ -59,9 +60,11 @@ public class ServerController implements ApplicationListener {
 			}
 		);
 
+		onEvent(new ServerLoadEvent());
 		onEvent(new WorldLoadEvent());
 		onEvent(new GameOverEvent());
 		onEvent(new PlayEvent());
+
 		runEvent(new TriggerUpdate());
 	}
 
