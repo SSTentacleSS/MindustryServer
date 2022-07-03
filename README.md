@@ -6,6 +6,8 @@ This project aims to create an improved version of the official version of the s
 
 - [x] Parallel I/O (preventing input from being mixed up with output when outputting to the console)
 ![](docs/IO.gif)
+- [x] Command input help
+![](docs/InputHelper.gif)
 - [ ] Complete rewriting of the standard Abuben handler
 
 # Installing
