@@ -528,17 +528,20 @@ public class BasicCommands implements RegistrableCommand {
 				if (arg.length == 0) {
 					info("All config values:");
 					for (Config c : Config.all) {
-						info("&lk| @: @", c.name(), "&lc&fi" + c.get());
+						info("&lk| @: @", c.name, "&lc&fi" + c.get());
 						info("&lk| | &lw" + c.description);
 						info("&lk|");
 					}
 					return;
 				}
 
+				Config c = Config.all.find(
+					param -> param.name.equalsIgnoreCase(arg[0])
+				);
+
 				try {
-					Config c = Config.valueOf(arg[0]);
 					if (arg.length == 1) {
-						info("'@' is currently @.", c.name(), c.get());
+						info("'@' is currently @.", c.name, c.get());
 					} else {
 						if (c.isBool()) {
 							c.set(arg[1].equals("on") || arg[1].equals("true"));
@@ -553,7 +556,7 @@ public class BasicCommands implements RegistrableCommand {
 							c.set(arg[1].replace("\\n", "\n"));
 						}
 
-						info("@ set to @.", c.name(), c.get());
+						info("@ set to @.", c.name, c.get());
 						Core.settings.forceSave();
 					}
 				} catch (IllegalArgumentException e) {

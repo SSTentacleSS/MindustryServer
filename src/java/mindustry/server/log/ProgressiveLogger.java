@@ -23,10 +23,12 @@ public class ProgressiveLogger implements LogHandler {
 	public static SimpleDateFormat dateFormat = new SimpleDateFormat(
 		"[dd-MM-yyyy HH:mm:ss.S]"
 	);
+
 	public volatile String inputPrompt = Colors.applyStyle(
 		"[Server] |> ",
 		AttributedStyle.BOLD.foreground(170, 255, 50)
 	);
+
 	public ExecutorService executor = Executors.newSingleThreadExecutor();
 	public SystemCompleter systemCompleter = new SystemCompleter();
 	public CommandsRegistry commandsRegistry = new CommandsRegistry("");
