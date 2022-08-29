@@ -1,6 +1,7 @@
 package mindustry.server.utils;
 
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class Pipe<A> {
@@ -50,6 +51,10 @@ public class Pipe<A> {
 		return new Pipe<R>(
 			func.apply(object, argObject1, argObject2, argObject3)
 		);
+	}
+
+	public void result(Consumer<A> cons) {
+		cons.accept(object);
 	}
 
 	public A result() {

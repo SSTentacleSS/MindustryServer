@@ -18,6 +18,7 @@ import mindustry.io.SaveIO;
 import mindustry.net.Administration.Config;
 import mindustry.server.command.BasicCommands;
 import mindustry.server.command.CommandsRegistry;
+import mindustry.server.command.Help;
 import mindustry.server.event.emitter.Emitter;
 import mindustry.server.event.emitter.TriggerUpdate;
 import mindustry.server.event.listener.GameOverEvent;
@@ -187,6 +188,7 @@ public class ServerController implements ApplicationListener {
 
 	public void registerCommands() {
 		new BasicCommands().register(Main.IO.commandsRegistry);
+		// new Help().register(Main.IO.commandsRegistry);
 	}
 
 	private <T> void onEvent(Listener<T> listener) {

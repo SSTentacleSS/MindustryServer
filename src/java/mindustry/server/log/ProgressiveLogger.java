@@ -10,6 +10,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import mindustry.server.command.CommandsRegistry;
+import mindustry.server.utils.Colors;
 import mindustry.server.utils.Pipe;
 import org.jline.reader.LineReader;
 import org.jline.reader.LineReaderBuilder;

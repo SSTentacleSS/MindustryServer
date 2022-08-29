@@ -1,4 +1,4 @@
-package mindustry.server.log;
+package mindustry.server.utils;
 
 import org.jline.utils.AttributedStringBuilder;
 import org.jline.utils.AttributedStyle;
