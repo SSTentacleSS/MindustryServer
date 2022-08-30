@@ -54,11 +54,11 @@ public class Main implements ApplicationListener {
 			for (LoadedMod mod : Vars.mods.list()) if (mod.hasContentErrors()) {
 				Log.err("| &ly[@]", mod.name);
 
-				for (Content cont : mod.erroredContent) Log.err(
+				for (Content content : mod.erroredContent) Log.err(
 					"| | &y@: &c@",
-					cont.minfo.sourceFile.name(),
+					content.minfo.sourceFile.name(),
 					Strings
-						.getSimpleMessage(cont.minfo.baseError)
+						.getSimpleMessage(content.minfo.baseError)
 						.replace("\n", " ")
 				);
 			}

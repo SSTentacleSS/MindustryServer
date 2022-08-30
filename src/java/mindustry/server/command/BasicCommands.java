@@ -26,9 +26,8 @@ import mindustry.server.StateController;
 import mindustry.type.*;
 
 // TODO: Sort commands by files
-public class BasicCommands implements RegistrableCommand {
+public class BasicCommands {
 
-	@Override
 	public void register(CommandHandler handler) {
 		handler.register(
 			"help",

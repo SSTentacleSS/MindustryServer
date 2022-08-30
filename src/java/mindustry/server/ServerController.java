@@ -9,16 +9,18 @@ import arc.util.CommandHandler.CommandResponse;
 import arc.util.CommandHandler.ResponseType;
 import arc.util.Log;
 import arc.util.Timer;
+
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import mindustry.Vars;
 import mindustry.core.GameState.State;
 import mindustry.core.Version;
 import mindustry.io.SaveIO;
 import mindustry.net.Administration.Config;
-import mindustry.server.command.BasicCommands;
 import mindustry.server.command.CommandsRegistry;
-import mindustry.server.command.Help;
+import mindustry.server.command.ServerRegistrableCommand;
 import mindustry.server.event.emitter.Emitter;
 import mindustry.server.event.emitter.TriggerUpdate;
 import mindustry.server.event.listener.GameOverEvent;
@@ -29,6 +31,7 @@ import mindustry.server.event.listener.WorldLoadEvent;
 import mindustry.server.utils.Pipe;
 import org.jline.widget.TailTipWidgets;
 import org.jline.widget.TailTipWidgets.TipType;
+import org.reflections.Reflections;
 
 public class ServerController implements ApplicationListener {
 	public Fi logFolder = Core.settings.getDataDirectory().child("logs/");
@@ -52,11 +55,10 @@ public class ServerController implements ApplicationListener {
 
 		new TailTipWidgets(
 			Main.IO.reader,
-			Main.IO.commandsRegistry.tailTips,
+			StateController.commandsRegistry.tailTips,
 			0,
 			TipType.TAIL_TIP
-		)
-		.enable();
+		).enable();
 
 		Timer.schedule(
 			() -> Core.settings.forceSave(),
@@ -120,7 +122,7 @@ public class ServerController implements ApplicationListener {
 			argCommands,
 			startupCommands
 		)) {
-			CommandResponse response = Main.IO.commandsRegistry.handleMessage(
+			CommandResponse response = StateController.commandsRegistry.handleMessage(
 				command
 			);
 
@@ -157,7 +159,7 @@ public class ServerController implements ApplicationListener {
 	}
 
 	private void handleCommandString(String line) {
-		CommandsRegistry handler = Main.IO.commandsRegistry;
+		CommandsRegistry handler = StateController.commandsRegistry;
 		CommandResponse response = handler.handleMessage(line);
 
 		String message = new String();
@@ -187,8 +189,23 @@ public class ServerController implements ApplicationListener {
 	}
 
 	public void registerCommands() {
-		new BasicCommands().register(Main.IO.commandsRegistry);
-		// new Help().register(Main.IO.commandsRegistry);
+		getSubClasses(
+			ServerRegistrableCommand.class.getPackageName(),
+			ServerRegistrableCommand.class
+		).forEach(commandClass -> {
+			try {
+                ServerRegistrableCommand command = commandClass.getConstructor().newInstance();
+
+                StateController.commandsRegistry.register(
+                    command.getName(),
+                    command.getParams(),
+                    command.getDescription(),
+                    args -> command.listener(args)
+                );
+            } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+                return;
+            }
+		});
 	}
 
 	private <T> void onEvent(Listener<T> listener) {
@@ -215,6 +232,13 @@ public class ServerController implements ApplicationListener {
 			.pipe(commandsStr -> commandsStr.split(","))
 			.result();
 	}
+	
+	private <T> Set<Class<? extends T>> getSubClasses(String packageName, Class<T> clazz) {
+        return Pipe.apply(packageName)
+            .pipe(Reflections::new)
+            .pipe(reflection -> reflection.getSubTypesOf(clazz))
+            .result();
+    }
 
 	private <T> T[] concatWithArrayCopy(T[] array1, T[] array2) {
 		T[] result = Arrays.copyOf(array1, array1.length + array2.length);

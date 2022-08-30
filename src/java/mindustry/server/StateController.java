@@ -4,8 +4,10 @@ import arc.util.Interval;
 import arc.util.Timer.Task;
 import mindustry.game.Gamemode;
 import mindustry.maps.Map;
+import mindustry.server.command.CommandsRegistry;
 
 public final class StateController {
+	public static CommandsRegistry commandsRegistry = new CommandsRegistry("");
 	public static Interval autosaveCount = new Interval();
 	public static int roundExtraTime = 12;
 	public static int configSaveInterval = 60;

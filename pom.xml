@@ -37,15 +37,27 @@
 
   <dependencies>
     <dependency>
+      <groupId>org.reflections</groupId>
+      <artifactId>reflections</artifactId>
+      <version>0.10.2</version>
+    </dependency>
+
+    <dependency>
       <groupId>org.jline</groupId>
       <artifactId>jline</artifactId>
       <version>3.21.0</version>
     </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-nop</artifactId>
+      <version>1.7.36</version>
+    </dependency> 
     
     <dependency>
       <groupId>com.github.Anuken.Mindustry</groupId>
       <artifactId>core</artifactId>
-      <version>${mindustryVersion}</version> <!-- TODO: Change to ${mindustryVersion}, when abuben release v135.3 -->
+      <version>${mindustryVersion}</version>
     </dependency>
 
     <dependency>

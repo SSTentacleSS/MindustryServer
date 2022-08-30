@@ -9,7 +9,6 @@ import java.util.Date;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import mindustry.server.command.CommandsRegistry;
 import mindustry.server.utils.Colors;
 import mindustry.server.utils.Pipe;
 import org.jline.reader.LineReader;
@@ -32,7 +31,6 @@ public class ProgressiveLogger implements LogHandler {
 
 	public ExecutorService executor = Executors.newSingleThreadExecutor();
 	public SystemCompleter systemCompleter = new SystemCompleter();
-	public CommandsRegistry commandsRegistry = new CommandsRegistry("");
 	public Terminal terminal;
 	public LineReader reader;
 
