@@ -18,7 +18,7 @@ public class Help implements ServerRegistrableCommand {
 				.apply("commands.help.founded")
 				.pipe(Bundler::getLocalized, commands.size)
 				.result(Log::info);
-			
+
 			commands.forEach(command -> {
 				Log.info(
 					"  &b&lb " +
