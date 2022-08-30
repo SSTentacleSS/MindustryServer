@@ -17,7 +17,7 @@ import mindustry.maps.Maps.ShuffleMode;
 import mindustry.mod.Mod;
 import mindustry.mod.Mods.LoadedMod;
 import mindustry.net.Net;
-import mindustry.server.event.ServerCloseEvent;
+import mindustry.server.events.listeners.ServerCloseEvent;
 import mindustry.server.log.ProgressiveLogger;
 
 public class Main implements ApplicationListener {

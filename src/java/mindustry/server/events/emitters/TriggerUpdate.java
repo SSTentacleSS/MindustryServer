@@ -1,4 +1,4 @@
-package mindustry.server.event.emitter;
+package mindustry.server.events.emitters;
 
 import arc.files.Fi;
 import arc.struct.Seq;
@@ -10,6 +10,7 @@ import mindustry.game.EventType.Trigger;
 import mindustry.io.SaveIO;
 import mindustry.net.Administration.Config;
 import mindustry.server.StateController;
+import mindustry.server.events.Emitter;
 import mindustry.server.log.ProgressiveLogger;
 
 // TODO: Rewrite

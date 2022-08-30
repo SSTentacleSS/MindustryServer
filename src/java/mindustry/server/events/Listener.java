@@ -1,4 +1,4 @@
-package mindustry.server.event.listener;
+package mindustry.server.events;
 
 import arc.func.Cons;
 

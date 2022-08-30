@@ -1,8 +1,9 @@
-package mindustry.server.event.listener;
+package mindustry.server.events.listeners;
 
 import arc.func.Cons;
 import arc.util.Log;
 import mindustry.game.EventType;
+import mindustry.server.events.Listener;
 import mindustry.server.utils.Bundler;
 
 public class ServerLoadEvent implements Listener<EventType.ServerLoadEvent> {

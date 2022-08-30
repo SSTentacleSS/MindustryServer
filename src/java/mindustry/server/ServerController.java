@@ -4,6 +4,7 @@ import arc.ApplicationListener;
 import arc.Core;
 import arc.Events;
 import arc.files.Fi;
+import arc.func.Cons;
 import arc.util.CommandHandler.Command;
 import arc.util.CommandHandler.CommandResponse;
 import arc.util.CommandHandler.ResponseType;
@@ -21,13 +22,9 @@ import mindustry.io.SaveIO;
 import mindustry.net.Administration.Config;
 import mindustry.server.command.CommandsRegistry;
 import mindustry.server.command.ServerRegistrableCommand;
-import mindustry.server.event.emitter.Emitter;
-import mindustry.server.event.emitter.TriggerUpdate;
-import mindustry.server.event.listener.GameOverEvent;
-import mindustry.server.event.listener.Listener;
-import mindustry.server.event.listener.PlayEvent;
-import mindustry.server.event.listener.ServerLoadEvent;
-import mindustry.server.event.listener.WorldLoadEvent;
+import mindustry.server.events.Emitter;
+import mindustry.server.events.Listener;
+import mindustry.server.events.emitters.TriggerUpdate;
 import mindustry.server.utils.Pipe;
 import org.jline.widget.TailTipWidgets;
 import org.jline.widget.TailTipWidgets.TipType;
@@ -73,10 +70,7 @@ public class ServerController implements ApplicationListener {
 			}
 		);
 
-		onEvent(new ServerLoadEvent());
-		onEvent(new WorldLoadEvent());
-		onEvent(new GameOverEvent());
-		onEvent(new PlayEvent());
+		registerEventListeners();
 
 		runEvent(new TriggerUpdate());
 	}
@@ -140,6 +134,42 @@ public class ServerController implements ApplicationListener {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
+	public void registerEventListeners() {
+		getSubClasses(
+			Listener.class.getPackageName() + ".listeners",
+			Listener.class
+		).forEach(eventClass -> {
+			try {
+                Listener<?> command = eventClass.getConstructor().newInstance();
+
+				Events.on((Class<Object>) command.getListenerClass(), (Cons<Object>) command.getListener());
+            } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+                return;
+            }
+		});
+	}
+
+	public void registerCommands() {
+		getSubClasses(
+			ServerRegistrableCommand.class.getPackageName(),
+			ServerRegistrableCommand.class
+		).forEach(commandClass -> {
+			try {
+                ServerRegistrableCommand command = commandClass.getConstructor().newInstance();
+
+                StateController.commandsRegistry.register(
+                    command.getName(),
+                    command.getParams(),
+                    command.getDescription(),
+                    args -> command.listener(args)
+                );
+            } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+                return;
+            }
+		});
+	}
+
 	public void handleInput() {
 		CompletableFuture<String> readFuture = Main.IO.read();
 
@@ -186,30 +216,6 @@ public class ServerController implements ApplicationListener {
 		}
 
 		Log.err(message);
-	}
-
-	public void registerCommands() {
-		getSubClasses(
-			ServerRegistrableCommand.class.getPackageName(),
-			ServerRegistrableCommand.class
-		).forEach(commandClass -> {
-			try {
-                ServerRegistrableCommand command = commandClass.getConstructor().newInstance();
-
-                StateController.commandsRegistry.register(
-                    command.getName(),
-                    command.getParams(),
-                    command.getDescription(),
-                    args -> command.listener(args)
-                );
-            } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-                return;
-            }
-		});
-	}
-
-	private <T> void onEvent(Listener<T> listener) {
-		Events.on(listener.getListenerClass(), listener.getListener());
 	}
 
 	private <T> void runEvent(Emitter<T> emitter) {

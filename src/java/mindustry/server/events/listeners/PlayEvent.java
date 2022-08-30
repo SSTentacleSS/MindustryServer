@@ -1,4 +1,4 @@
-package mindustry.server.event.listener;
+package mindustry.server.events.listeners;
 
 import arc.Core;
 import arc.func.Cons;
@@ -7,6 +7,7 @@ import arc.util.serialization.JsonValue;
 import mindustry.Vars;
 import mindustry.game.EventType;
 import mindustry.io.JsonIO;
+import mindustry.server.events.Listener;
 
 public class PlayEvent implements Listener<EventType.PlayEvent> {
 

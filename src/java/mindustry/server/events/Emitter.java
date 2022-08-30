@@ -1,4 +1,4 @@
-package mindustry.server.event.emitter;
+package mindustry.server.events;
 
 public interface Emitter<T> {
 	public Runnable getEmitter();

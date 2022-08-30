@@ -1,4 +1,4 @@
-package mindustry.server.event.listener;
+package mindustry.server.events.listeners;
 
 import arc.func.Cons;
 import arc.util.Log;
@@ -14,6 +14,7 @@ import mindustry.maps.MapException;
 import mindustry.net.Packets.KickReason;
 import mindustry.net.WorldReloader;
 import mindustry.server.StateController;
+import mindustry.server.events.Listener;
 
 // TODO: Rewrite
 public class GameOverEvent implements Listener<EventType.GameOverEvent> {
