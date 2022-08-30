@@ -19,6 +19,7 @@ import mindustry.mod.Mods.LoadedMod;
 import mindustry.net.Net;
 import mindustry.server.events.listeners.ServerCloseEvent;
 import mindustry.server.log.ProgressiveLogger;
+import mindustry.server.utils.Bundler;
 
 public class Main implements ApplicationListener {
 	public static String[] args;
@@ -120,7 +121,7 @@ public class Main implements ApplicationListener {
 	}
 
 	public static void shutdown() {
-		Log.info("The server will now be shut down!");
+		Log.info(Bundler.getLocalized("server.shutdown"));
 
 		Events.fire(new ServerCloseEvent());
 

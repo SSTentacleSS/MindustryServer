@@ -7,6 +7,8 @@ import mindustry.maps.Map;
 import mindustry.server.command.CommandsRegistry;
 
 public final class StateController {
+	public static String serverProviderAuthor = "SSTentacleSS";
+	public static String serverProviderName = "MindustryServer";
 	public static CommandsRegistry commandsRegistry = new CommandsRegistry("");
 	public static Interval autosaveCount = new Interval();
 	public static int roundExtraTime = 12;

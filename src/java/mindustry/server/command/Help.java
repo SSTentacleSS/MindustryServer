@@ -20,15 +20,18 @@ public class Help implements ServerRegistrableCommand {
 				.result(Log::info);
 
 			commands.forEach(command -> {
-				Log.info(
-					"  &b&lb " +
-					command.text +
-					(command.paramText.isEmpty() ? "" : " &lc&fi") +
-					command.paramText +
-					"&fr - &lw" +
-					command.description
-				);
+				Log.info(helpStringFromCommand(command));
 			});
+		} else {
+			Pipe.apply(commands.find(command -> command.text.equalsIgnoreCase(args[0])))
+				.result(command -> {
+					if (command == null)
+						Log.err(Bundler.getLocalized("commands.help.not_founded", args[0]));
+					else {
+						Log.info(command.text + ":");
+						Log.info(helpStringFromCommand(command));
+					}
+				});
 		}
 	}
 
@@ -45,5 +48,15 @@ public class Help implements ServerRegistrableCommand {
 	@Override
 	public String getParams() {
 		return "[command]";
+	}
+
+	private String helpStringFromCommand(Command command) {
+		return
+			"  &b&lb " +
+			command.text +
+			(command.paramText.isEmpty() ? "" : " &lc&fi") +
+			command.paramText +
+			"&fr - &lw" +
+			command.description;
 	}
 }
