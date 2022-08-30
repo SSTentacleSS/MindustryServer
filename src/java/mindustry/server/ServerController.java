@@ -4,13 +4,11 @@ import arc.ApplicationListener;
 import arc.Core;
 import arc.Events;
 import arc.files.Fi;
-import arc.func.Cons;
 import arc.util.CommandHandler.Command;
 import arc.util.CommandHandler.CommandResponse;
 import arc.util.CommandHandler.ResponseType;
 import arc.util.Log;
 import arc.util.Timer;
-
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Set;
@@ -55,7 +53,8 @@ public class ServerController implements ApplicationListener {
 			StateController.commandsRegistry.tailTips,
 			0,
 			TipType.TAIL_TIP
-		).enable();
+		)
+		.enable();
 
 		Timer.schedule(
 			() -> Core.settings.forceSave(),
@@ -137,37 +136,65 @@ public class ServerController implements ApplicationListener {
 	@SuppressWarnings("unchecked")
 	public void registerEventListeners() {
 		getSubClasses(
-			Listener.class.getPackageName() + ".listeners",
-			Listener.class
-		).forEach(eventClass -> {
-			try {
-                Listener<?> command = eventClass.getConstructor().newInstance();
+				Listener.class.getPackageName() + ".listeners",
+				Listener.class
+			)
+			.forEach(
+				eventClass -> {
+					try {
+						Listener<?> command = eventClass
+							.getConstructor()
+							.newInstance();
 
-				Events.on((Class<Object>) command.getListenerClass(), (Cons<Object>) command.getListener());
-            } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-                return;
-            }
-		});
+						Events.on(
+							(Class<Object>) command.getListenerClass(),
+							event ->
+								((Listener<Object>) command).listener(event)
+						);
+					} catch (
+						NoSuchMethodException
+						| SecurityException
+						| InstantiationException
+						| IllegalAccessException
+						| IllegalArgumentException
+						| InvocationTargetException e
+					) {
+						return;
+					}
+				}
+			);
 	}
 
 	public void registerCommands() {
 		getSubClasses(
-			ServerRegistrableCommand.class.getPackageName(),
-			ServerRegistrableCommand.class
-		).forEach(commandClass -> {
-			try {
-                ServerRegistrableCommand command = commandClass.getConstructor().newInstance();
+				ServerRegistrableCommand.class.getPackageName(),
+				ServerRegistrableCommand.class
+			)
+			.forEach(
+				commandClass -> {
+					try {
+						ServerRegistrableCommand command = commandClass
+							.getConstructor()
+							.newInstance();
 
-                StateController.commandsRegistry.register(
-                    command.getName(),
-                    command.getParams(),
-                    command.getDescription(),
-                    args -> command.listener(args)
-                );
-            } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-                return;
-            }
-		});
+						StateController.commandsRegistry.register(
+							command.getName(),
+							command.getParams(),
+							command.getDescription(),
+							args -> command.listener(args)
+						);
+					} catch (
+						NoSuchMethodException
+						| SecurityException
+						| InstantiationException
+						| IllegalAccessException
+						| IllegalArgumentException
+						| InvocationTargetException e
+					) {
+						return;
+					}
+				}
+			);
 	}
 
 	public void handleInput() {
@@ -238,13 +265,17 @@ public class ServerController implements ApplicationListener {
 			.pipe(commandsStr -> commandsStr.split(","))
 			.result();
 	}
-	
-	private <T> Set<Class<? extends T>> getSubClasses(String packageName, Class<T> clazz) {
-        return Pipe.apply(packageName)
-            .pipe(Reflections::new)
-            .pipe(reflection -> reflection.getSubTypesOf(clazz))
-            .result();
-    }
+
+	private <T> Set<Class<? extends T>> getSubClasses(
+		String packageName,
+		Class<T> clazz
+	) {
+		return Pipe
+			.apply(packageName)
+			.pipe(Reflections::new)
+			.pipe(reflection -> reflection.getSubTypesOf(clazz))
+			.result();
+	}
 
 	private <T> T[] concatWithArrayCopy(T[] array1, T[] array2) {
 		T[] result = Arrays.copyOf(array1, array1.length + array2.length);

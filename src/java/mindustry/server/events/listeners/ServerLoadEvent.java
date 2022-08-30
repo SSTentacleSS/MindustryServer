@@ -1,6 +1,5 @@
 package mindustry.server.events.listeners;
 
-import arc.func.Cons;
 import arc.util.Log;
 import mindustry.game.EventType;
 import mindustry.server.events.Listener;
@@ -9,10 +8,8 @@ import mindustry.server.utils.Bundler;
 public class ServerLoadEvent implements Listener<EventType.ServerLoadEvent> {
 
 	@Override
-	public Cons<mindustry.game.EventType.ServerLoadEvent> getListener() {
-		return event -> {
-			Log.info(Bundler.getLocalized("server.loaded"));
-		};
+	public void listener(EventType.ServerLoadEvent event) {
+		Log.info(Bundler.getLocalized("server.loaded"));
 	}
 
 	@Override

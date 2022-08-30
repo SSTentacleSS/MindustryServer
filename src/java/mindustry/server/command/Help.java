@@ -19,19 +19,31 @@ public class Help implements ServerRegistrableCommand {
 				.pipe(Bundler::getLocalized, commands.size)
 				.result(Log::info);
 
-			commands.forEach(command -> {
-				Log.info(helpStringFromCommand(command));
-			});
+			commands.forEach(
+				command -> {
+					Log.info(helpStringFromCommand(command));
+				}
+			);
 		} else {
-			Pipe.apply(commands.find(command -> command.text.equalsIgnoreCase(args[0])))
-				.result(command -> {
-					if (command == null)
-						Log.err(Bundler.getLocalized("commands.help.not_founded", args[0]));
-					else {
-						Log.info(command.text + ":");
-						Log.info(helpStringFromCommand(command));
+			Pipe
+				.apply(
+					commands.find(
+						command -> command.text.equalsIgnoreCase(args[0])
+					)
+				)
+				.result(
+					command -> {
+						if (command == null) Log.err(
+							Bundler.getLocalized(
+								"commands.help.not_founded",
+								args[0]
+							)
+						); else {
+							Log.info(command.text + ":");
+							Log.info(helpStringFromCommand(command));
+						}
 					}
-				});
+				);
 		}
 	}
 
@@ -51,12 +63,13 @@ public class Help implements ServerRegistrableCommand {
 	}
 
 	private String helpStringFromCommand(Command command) {
-		return
+		return (
 			"  &b&lb " +
 			command.text +
 			(command.paramText.isEmpty() ? "" : " &lc&fi") +
 			command.paramText +
 			"&fr - &lw" +
-			command.description;
+			command.description
+		);
 	}
 }

@@ -17,7 +17,7 @@ import mindustry.maps.Maps.ShuffleMode;
 import mindustry.mod.Mod;
 import mindustry.mod.Mods.LoadedMod;
 import mindustry.net.Net;
-import mindustry.server.events.listeners.ServerCloseEvent;
+import mindustry.server.events.emitters.ServerCloseEvent;
 import mindustry.server.log.ProgressiveLogger;
 import mindustry.server.utils.Bundler;
 

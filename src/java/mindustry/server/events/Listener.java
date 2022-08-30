@@ -1,8 +1,6 @@
 package mindustry.server.events;
 
-import arc.func.Cons;
-
 public interface Listener<T> {
-	public Cons<T> getListener();
+	public void listener(T event);
 	public Class<T> getListenerClass();
 }
