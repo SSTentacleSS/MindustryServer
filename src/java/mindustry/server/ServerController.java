@@ -187,7 +187,8 @@ public class ServerController implements ApplicationListener {
 								} catch (Throwable error) {
 									Log.err(
 										"Error while executing command '" +
-										command.getName() + "'",
+										command.getName() +
+										"'",
 										error
 									);
 								}

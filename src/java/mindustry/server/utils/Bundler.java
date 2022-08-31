@@ -9,6 +9,18 @@ import mindustry.gen.Player;
 public class Bundler {
 	public static ResourceBundle bundle = ResourceBundle.getBundle("resources");
 
+	public static void sendLocalized(Player player, String key) {
+		player.sendMessage(getLocalized(player, key));
+	}
+
+	public static void sendLocalized(
+		Player player,
+		String key,
+		Object... formatObjects
+	) {
+		player.sendMessage(getLocalized(player, key, formatObjects));
+	}
+
 	public static String getLocalized(
 		Player player,
 		String key,
@@ -17,11 +29,7 @@ public class Bundler {
 		return getLocalized(new Locale(player.locale), key, formatObjects);
 	}
 
-	public static String getLocalized(
-		Player player,
-		Locale locale,
-		String key
-	) {
+	public static String getLocalized(Player player, String key) {
 		return getLocalized(new Locale(player.locale), key);
 	}
 

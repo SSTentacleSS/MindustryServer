@@ -92,4 +92,12 @@ public class Host implements ServerRegistrableCommand {
 	public String getParams() {
 		return "[mapname] [mode]";
 	}
+
+	public static boolean errorIfNotPlaying() {
+		boolean isPlaying = Vars.state.isPlaying();
+
+		if (!isPlaying)
+			Bundler.logLocalized(LogLevel.err, "commands.host.not_hosting");
+		return !isPlaying;
+	}
 }
