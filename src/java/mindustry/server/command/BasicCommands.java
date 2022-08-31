@@ -417,53 +417,5 @@
 // 				}
 // 			}
 // 		);
-
-// 		handler.register(
-// 			"runwave",
-// 			"Trigger the next wave.",
-// 			arg -> {
-// 				if (!state.is(State.playing)) {
-// 					err("Not hosting. Host a game first.");
-// 				} else {
-// 					logic.runWave();
-// 					info("Wave spawned.");
-// 				}
-// 			}
-// 		);
-
-// 		handler.register(
-// 			"load",
-// 			"<slot>",
-// 			"Load a save from a slot.",
-// 			arg -> {
-// 				if (state.is(State.playing)) {
-// 					err("Already hosting. Type 'stop' to stop hosting first.");
-// 					return;
-// 				}
-
-// 				Fi file = saveDirectory.child(arg[0] + "." + saveExtension);
-
-// 				if (!SaveIO.isSaveValid(file)) {
-// 					err("No (valid) save data found for slot.");
-// 					return;
-// 				}
-
-// 				Core.app.post(
-// 					() -> {
-// 						try {
-// 							SaveIO.load(file);
-// 							state.rules.sector = null;
-// 							info("Save loaded.");
-// 							state.set(State.playing);
-// 							netServer.openServer();
-// 						} catch (Throwable t) {
-// 							err(
-// 								"Failed to load save. Outdated or corrupt file."
-// 							);
-// 						}
-// 					}
-// 				);
-// 			}
-// 		);
 // 	}
 // }

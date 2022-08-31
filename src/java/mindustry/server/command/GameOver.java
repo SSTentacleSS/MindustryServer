@@ -4,8 +4,9 @@ import arc.Events;
 import arc.util.Log.LogLevel;
 import mindustry.Vars;
 import mindustry.server.StateController;
-import mindustry.server.events.listeners.GameOverEvent;
 import mindustry.server.utils.Bundler;
+import mindustry.game.EventType;
+import mindustry.game.Team;
 
 public class GameOver implements ServerRegistrableCommand {
 
@@ -18,7 +19,7 @@ public class GameOver implements ServerRegistrableCommand {
 
 		Bundler.logLocalized(LogLevel.info, "commands.gameover.core_destroyed");
 		StateController.inExtraRound = false;
-		Events.fire(new GameOverEvent());
+		Events.fire(new EventType.GameOverEvent(Team.crux));
 	}
 
 	@Override
