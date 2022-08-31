@@ -21,7 +21,7 @@ import org.jline.utils.AttributedStyle;
 
 public class ProgressiveLogger implements LogHandler {
 	public static SimpleDateFormat dateFormat = new SimpleDateFormat(
-		"[dd-MM-yyyy HH:mm:ss.S]"
+		"[dd-MM-yyyy HH:mm:ss.SSS]"
 	);
 
 	public volatile String inputPrompt = Colors.applyStyle(

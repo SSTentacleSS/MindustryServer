@@ -181,7 +181,17 @@ public class ServerController implements ApplicationListener {
 							command.getName(),
 							command.getParams(),
 							command.getDescription(),
-							args -> command.listener(args)
+							args -> {
+								try {
+									command.listener(args);
+								} catch (Throwable error) {
+									Log.err(
+										"Error while executing command " +
+										command.getName(),
+										error
+									);
+								}
+							}
 						);
 					} catch (
 						NoSuchMethodException

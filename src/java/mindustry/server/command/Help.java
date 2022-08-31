@@ -3,6 +3,7 @@ package mindustry.server.command;
 import arc.struct.Seq;
 import arc.util.CommandHandler.Command;
 import arc.util.Log;
+import arc.util.Log.LogLevel;
 import mindustry.server.StateController;
 import mindustry.server.utils.Bundler;
 import mindustry.server.utils.Pipe;
@@ -10,12 +11,12 @@ import mindustry.server.utils.Pipe;
 public class Help implements ServerRegistrableCommand {
 
 	@Override
-	public void listener(String[] args) {
+	public void listener(String[] args) throws Throwable {
 		Seq<Command> commands = StateController.commandsRegistry.getCommandList();
 
 		if (args.length == 0) {
 			Pipe
-				.apply("commands.help.founded")
+				.apply("commands.help.found")
 				.pipe(Bundler::getLocalized, commands.size)
 				.result(Log::info);
 
@@ -33,11 +34,10 @@ public class Help implements ServerRegistrableCommand {
 				)
 				.result(
 					command -> {
-						if (command == null) Log.err(
-							Bundler.getLocalized(
-								"commands.help.not_founded",
-								args[0]
-							)
+						if (command == null) Bundler.logLocalized(
+							LogLevel.err,
+							"commands.help.not_found",
+							args[0]
 						); else {
 							Log.info(command.text + ":");
 							Log.info(helpStringFromCommand(command));

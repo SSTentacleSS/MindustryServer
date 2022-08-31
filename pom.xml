@@ -68,32 +68,6 @@
 
     <dependency>
       <groupId>com.github.Anuken.Arc</groupId>
-      <artifactId>arcnet</artifactId>
-      <version>${arcVersion}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.github.Anuken</groupId>
-      <artifactId>rhino</artifactId>
-      <version>73a812444ac388ac2d94013b5cadc8f70b7ea027</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.github.Anuken.Arc</groupId>
-      <artifactId>freetype</artifactId>
-      <version>${arcVersion}</version>
-      <scope>compile</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>com.github.Anuken.Arc</groupId>
-      <artifactId>g3d</artifactId>
-      <version>${arcVersion}</version>
-      <scope>compile</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>com.github.Anuken.Arc</groupId>
       <artifactId>backend-headless</artifactId>
       <version>${arcVersion}</version>
       <scope>compile</scope>

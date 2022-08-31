@@ -97,6 +97,7 @@ public class GameOverEvent implements Listener<EventType.GameOverEvent> {
 		StateController.inExtraRound = true;
 		StateController.serverTimer.scheduleTask(
 			new Task() {
+
 				@Override
 				public void run() {
 					try {

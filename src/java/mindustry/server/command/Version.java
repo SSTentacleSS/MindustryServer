@@ -6,26 +6,25 @@ import static mindustry.core.Version.number;
 import static mindustry.core.Version.revision;
 import static mindustry.core.Version.type;
 
-import arc.util.Log;
+import arc.util.Log.LogLevel;
 import arc.util.OS;
 import mindustry.server.utils.Bundler;
 
 public class Version implements ServerRegistrableCommand {
 
 	@Override
-	public void listener(String[] args) {
-		Log.info(
-			Bundler.getLocalized(
-				"server.version",
-				number,
-				modifier,
-				type,
-				build,
-				revision
-			)
+	public void listener(String[] args) throws Throwable {
+		Bundler.logLocalized(
+			LogLevel.info,
+			"server.version",
+			number,
+			modifier,
+			type,
+			build,
+			revision
 		);
 
-		Log.info(Bundler.getLocalized("java.version", OS.javaVersion));
+		Bundler.logLocalized(LogLevel.info, "java.version", OS.javaVersion);
 	}
 
 	@Override
