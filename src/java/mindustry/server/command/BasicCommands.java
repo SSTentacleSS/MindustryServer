@@ -23,96 +23,10 @@
 // import mindustry.server.StateController;
 // import mindustry.type.*;
 
-// // TODO: Sort commands by files
+// // TODO: Sort commands by file
 // public class BasicCommands {
 
 // 	public void register(CommandHandler handler) {
-// 		handler.register(
-// 			"status",
-// 			"Display server status.",
-// 			arg -> {
-// 				if (state.isMenu()) {
-// 					info("Status: &rserver closed");
-// 				} else {
-// 					info("Status:");
-// 					info(
-// 						"  Playing on map &fi@ / Wave @",
-// 						Strings.capitalize(
-// 							Strings.stripColors(state.map.name())
-// 						),
-// 						state.wave
-// 					);
-
-// 					if (state.rules.waves) {
-// 						info("  @ enemies.", state.enemies);
-// 					} else {
-// 						info(
-// 							"  @ seconds until next wave.",
-// 							(int) (state.wavetime / 60)
-// 						);
-// 					}
-
-// 					info(
-// 						"  @ FPS, @ MB used.",
-// 						Core.graphics.getFramesPerSecond(),
-// 						Core.app.getJavaHeap() / 1024 / 1024
-// 					);
-
-// 					if (Groups.player.size() > 0) {
-// 						info("  Players: @", Groups.player.size());
-// 						for (Player p : Groups.player) {
-// 							info("    @ / @", p.name, p.uuid());
-// 						}
-// 					} else {
-// 						info("  No players connected.");
-// 					}
-// 				}
-// 			}
-// 		);
-
-// 		handler.register(
-// 			"mods",
-// 			"Display all loaded mods.",
-// 			arg -> {
-// 				if (!mods.list().isEmpty()) {
-// 					info("Mods:");
-// 					for (LoadedMod mod : mods.list()) {
-// 						info(
-// 							"  @ &fi@",
-// 							mod.meta.displayName(),
-// 							mod.meta.version
-// 						);
-// 					}
-// 				} else {
-// 					info("No mods found.");
-// 				}
-// 				info(
-// 					"Mod directory: &fi@",
-// 					modDirectory.file().getAbsoluteFile().toString()
-// 				);
-// 			}
-// 		);
-
-// 		handler.register(
-// 			"mod",
-// 			"<name...>",
-// 			"Display information about a loaded plugin.",
-// 			arg -> {
-// 				LoadedMod mod = mods
-// 					.list()
-// 					.find(p -> p.meta.name.equalsIgnoreCase(arg[0]));
-// 				if (mod != null) {
-// 					info("Name: @", mod.meta.displayName());
-// 					info("Internal Name: @", mod.name);
-// 					info("Version: @", mod.meta.version);
-// 					info("Author: @", mod.meta.author);
-// 					info("Path: @", mod.file.path());
-// 					info("Description: @", mod.meta.description);
-// 				} else {
-// 					info("No mod with name '@' found.", arg[0]);
-// 				}
-// 			}
-// 		);
 
 // 		handler.register(
 // 			"js",

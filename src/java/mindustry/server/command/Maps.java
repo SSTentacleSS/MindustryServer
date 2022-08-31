@@ -16,7 +16,7 @@ public class Maps implements ServerRegistrableCommand {
 		Seq<Map> defaultMaps = new Seq<>();
 
 		if (maps.size == 0) {
-			Bundler.logLocalized(LogLevel.err, "commands.maps.not_found");
+			Bundler.logLocalized(LogLevel.info, "commands.maps.not_found");
 			return;
 		}
 
