@@ -3,10 +3,10 @@ package mindustry.server.command;
 import arc.Events;
 import arc.util.Log.LogLevel;
 import mindustry.Vars;
-import mindustry.server.StateController;
-import mindustry.server.utils.Bundler;
 import mindustry.game.EventType;
 import mindustry.game.Team;
+import mindustry.server.StateController;
+import mindustry.server.utils.Bundler;
 
 public class GameOver implements ServerRegistrableCommand {
 

@@ -8,8 +8,7 @@ public class Say implements ServerRegistrableCommand {
 
 	@Override
 	public void listener(String[] args) throws Throwable {
-		if (Host.errorIfNotPlaying()) return;
-		else {
+		if (Host.errorIfNotPlaying()) return; else {
 			Groups.player.forEach(
 				player ->
 					Bundler.sendLocalized(

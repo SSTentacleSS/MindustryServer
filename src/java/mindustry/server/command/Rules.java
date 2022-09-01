@@ -22,19 +22,15 @@ public class Rules implements ServerRegistrableCommand {
 			LogLevel.info,
 			"commands.rules.list",
 			JsonIO.print(rules)
+		); else if (
+			!List.of("remove", "add").contains(args[0])
+		) Bundler.logLocalized(
+			LogLevel.err,
+			"commands.rules.invalid_usage.add_or_remove"
 		); else if (args.length == 1) Bundler.logLocalized(
 			LogLevel.err,
 			"commands.rules.invalid_usage.rule"
 		); else {
-			if (!List.of("remove", "add").contains(args[0])) {
-				Bundler.logLocalized(
-					LogLevel.err,
-					"commands.rules.invalid_usage.add_or_remove"
-				);
-
-				return;
-			}
-
 			boolean isAdd = args[0].equals("add");
 
 			if (isAdd && args.length < 3) {

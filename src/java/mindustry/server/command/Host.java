@@ -96,16 +96,20 @@ public class Host implements ServerRegistrableCommand {
 	public static boolean errorIfNotPlaying() {
 		boolean isPlaying = Vars.state.isPlaying();
 
-		if (!isPlaying)
-			Bundler.logLocalized(LogLevel.err, "commands.host.not_hosting");
+		if (!isPlaying) Bundler.logLocalized(
+			LogLevel.err,
+			"commands.host.not_hosting"
+		);
 		return !isPlaying;
 	}
 
 	public static boolean errorIfPlaying() {
 		boolean isPlaying = Vars.state.isPlaying();
 
-		if (isPlaying)
-			Bundler.logLocalized(LogLevel.err, "commands.host.no_menu");
+		if (isPlaying) Bundler.logLocalized(
+			LogLevel.err,
+			"commands.host.no_menu"
+		);
 		return isPlaying;
 	}
 }
