@@ -33,6 +33,6 @@ public class Pardon implements ServerRegistrableCommand {
 
 	@Override
 	public String getParams() {
-		return "<username/UUID/IP>";
+		return "<username/UUID/IP...>";
 	}
 }

@@ -48,6 +48,6 @@ public class Admin implements ServerRegistrableCommand {
 
 	@Override
 	public String getParams() {
-		return "<add/remove> <username/UUID/IP>";
+		return "<add/remove> <username/UUID/IP...>";
 	}
 }

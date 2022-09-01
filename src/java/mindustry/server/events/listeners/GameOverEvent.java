@@ -103,6 +103,7 @@ public class GameOverEvent implements Listener<EventType.GameOverEvent> {
 					try {
 						WorldReloader reloader = new WorldReloader();
 
+						if (Vars.netClient == null) return;
 						reloader.begin();
 						runnable.run();
 

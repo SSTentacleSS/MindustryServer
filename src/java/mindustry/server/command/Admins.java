@@ -12,7 +12,7 @@ public class Admins implements ServerRegistrableCommand {
 	public void listener(String[] args) throws Throwable {
 		Seq<PlayerInfo> admins = Vars.netServer.admins.getAdmins();
 
-		if (admins.size == 0) Bundler.logLocalized(
+		if (admins.size <= 0) Bundler.logLocalized(
 			LogLevel.info,
 			"commands.admins.no_admins"
 		); else {
