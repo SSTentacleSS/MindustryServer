@@ -38,7 +38,7 @@ public class Bundler {
 		String key,
 		Object... formatObjects
 	) {
-		return getLocalized(locale, key).formatted(formatObjects);
+		return String.format(getLocalized(locale, key));
 	}
 
 	public static String getLocalized(Locale locale, String key) {
@@ -56,7 +56,7 @@ public class Bundler {
 	}
 
 	public static String getLocalized(String key, Object... formatObjects) {
-		return getLocalized(key).formatted(formatObjects);
+		return String.format(getLocalized(key), formatObjects);
 	}
 
 	public static void logLocalized(LogLevel logLevel, String key) {
