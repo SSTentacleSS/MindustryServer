@@ -48,7 +48,10 @@ public class ProgressiveLogger implements LogHandler {
 					.system(true)
 					.build();
 
-			reader = LineReaderBuilder.builder().terminal(terminal).build();
+			reader = LineReaderBuilder.builder()
+				.terminal(terminal)
+				.appName("Mindustry Server")
+				.build();
 			terminal.enterRawMode();
 		} catch (IOException e) {
 			Log.err(e);
