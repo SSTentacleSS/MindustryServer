@@ -37,7 +37,7 @@ public class Main implements ApplicationListener {
 	public void init() {
 		Log.logger = IO;
 		Core.settings.setDataDirectory(Core.files.local("config"));
-		Vars.loadLocales = true;
+		Vars.loadLocales = false;
 		Vars.headless = true;
 
 		Vars.loadSettings();
