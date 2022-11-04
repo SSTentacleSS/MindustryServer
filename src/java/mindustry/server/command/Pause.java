@@ -2,6 +2,7 @@ package mindustry.server.command;
 
 import arc.util.Log.LogLevel;
 import mindustry.Vars;
+import mindustry.core.GameState.State;
 import mindustry.server.utils.Bundler;
 
 public class Pause implements ServerRegistrableCommand {
@@ -10,7 +11,10 @@ public class Pause implements ServerRegistrableCommand {
 	public void listener(String[] args) throws Throwable {
 		boolean pause = args[0].equals("on");
 
-		Vars.state.serverPaused = pause;
+		Vars.state.set(
+			pause ? State.paused : State.playing
+		);
+
 		Bundler.logLocalized(
 			LogLevel.info,
 			pause ? "commands.pause.paused" : "commands.pause.unpaused"
