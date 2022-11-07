@@ -8,7 +8,8 @@ This project aims to create an improved version of the official version of the s
 ![](docs/IO.gif)
 - [x] Command input help
 ![](docs/InputHelper.gif)
-- [ ] Complete rewriting of the standard Abuben handler
+- [x] Complete rewriting of the standard Abuben handler
+- [ ] Dynamic resources loading
 
 # Installing
 
