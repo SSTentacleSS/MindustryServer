@@ -9,11 +9,11 @@ This project aims to create an improved version of the official version of the s
 - [x] Command input help
 ![](docs/InputHelper.gif)
 - [x] Complete rewriting of the standard Abuben handler
-- [ ] Dynamic resources loading
+- [ ] Dynamic assets loading
 
 # Installing
 
-Download from https://github.com/SSTentacleSS/MindustryServer/tags
+Download from [tags](https://github.com/SSTentacleSS/MindustryServer/tags)
 
 or
 
