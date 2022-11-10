@@ -6,7 +6,8 @@ import mindustry.gen.Groups;
 import mindustry.server.events.Listener;
 
 public class PlayerLeaveEvent implements Listener<EventType.PlayerLeave> {
-	public static boolean quietExit = false;
+
+	private static boolean quietExit = false;
 
 	@Override
 	public void listener(PlayerLeave event) {
@@ -16,5 +17,13 @@ public class PlayerLeaveEvent implements Listener<EventType.PlayerLeave> {
 	@Override
 	public Class<PlayerLeave> getListenerClass() {
 		return EventType.PlayerLeave.class;
+	}
+
+	public static boolean isQuietExit() {
+		return quietExit;
+	}
+
+	public static void setQuietExit(boolean quietExit) {
+		PlayerLeaveEvent.quietExit = quietExit;
 	}
 }

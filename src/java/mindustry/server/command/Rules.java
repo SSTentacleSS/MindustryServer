@@ -11,6 +11,7 @@ import mindustry.gen.Call;
 import mindustry.io.JsonIO;
 import mindustry.server.utils.Bundler;
 
+// TODO: Refactor
 public class Rules implements ServerRegistrableCommand {
 
 	@Override

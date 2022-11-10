@@ -9,8 +9,8 @@ public class Mod implements ServerRegistrableCommand {
 
 	@Override
 	public void listener(String[] args) throws Throwable {
-		LoadedMod mod = Vars
-			.mods.list()
+		LoadedMod mod = Vars.mods
+			.list()
 			.find(plugin -> plugin.meta.name.equalsIgnoreCase(args[0]));
 
 		if (mod == null) Bundler.logLocalized(

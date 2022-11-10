@@ -35,8 +35,8 @@ public class ConfigCMD implements ServerRegistrableCommand {
 			return;
 		}
 
-		Config config = Config.all.find(
-			param -> param.name.equalsIgnoreCase(args[0])
+		Config config = Config.all.find(param ->
+			param.name.equalsIgnoreCase(args[0])
 		);
 
 		if (config == null) {

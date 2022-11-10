@@ -11,9 +11,7 @@ public class Pause implements ServerRegistrableCommand {
 	public void listener(String[] args) throws Throwable {
 		boolean pause = args[0].equals("on");
 
-		Vars.state.set(
-			pause ? State.paused : State.playing
-		);
+		Vars.state.set(pause ? State.paused : State.playing);
 
 		Bundler.logLocalized(
 			LogLevel.info,

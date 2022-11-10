@@ -17,7 +17,7 @@ public class Host implements ServerRegistrableCommand {
 			return;
 		}
 
-		StateController.serverTimer.clear();
+		StateController.getServerTimer().clear();
 		Gamemode gamemode = Gamemode.survival;
 		Map map;
 
@@ -37,13 +37,12 @@ public class Host implements ServerRegistrableCommand {
 			String mapName = Maps.normalizeMapName(args[0]);
 
 			map =
-				Vars
-					.maps.all()
-					.find(
-						serverMap ->
-							Maps
-								.normalizeMapName(serverMap.name())
-								.equalsIgnoreCase(mapName)
+				Vars.maps
+					.all()
+					.find(serverMap ->
+						Maps
+							.normalizeMapName(serverMap.name())
+							.equalsIgnoreCase(mapName)
 					);
 
 			if (map == null) {
@@ -65,7 +64,7 @@ public class Host implements ServerRegistrableCommand {
 
 		Bundler.logLocalized(LogLevel.info, "commands.host.loading");
 		Vars.logic.reset();
-		StateController.lastMode = gamemode;
+		StateController.setLastMode(gamemode);
 
 		Core.settings.put("lastServerMode", gamemode.name());
 

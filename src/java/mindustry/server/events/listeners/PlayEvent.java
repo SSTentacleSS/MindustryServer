@@ -19,7 +19,7 @@ public class PlayEvent implements Listener<EventType.PlayEvent> {
 			);
 
 			JsonIO.json.readFields(Vars.state.rules, value);
-		} catch (Throwable t) {
+		} catch (Exception t) {
 			Log.err("Error applying custom rules, proceeding without them.", t);
 		}
 	}

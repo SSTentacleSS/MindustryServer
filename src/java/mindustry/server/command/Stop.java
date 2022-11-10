@@ -11,7 +11,7 @@ public class Stop implements ServerRegistrableCommand {
 	@Override
 	public void listener(String[] args) throws Throwable {
 		Vars.net.closeServer();
-		StateController.serverTimer.clear();
+		StateController.getServerTimer().clear();
 		Vars.state.set(State.menu);
 		Bundler.logLocalized(LogLevel.info, "server.stopped");
 	}

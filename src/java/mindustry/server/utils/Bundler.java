@@ -6,8 +6,13 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import mindustry.gen.Player;
 
-public class Bundler {
-	public static ResourceBundle bundle = ResourceBundle.getBundle("resources");
+public final class Bundler {
+
+	private static ResourceBundle bundle = ResourceBundle.getBundle(
+		"resources"
+	);
+
+	private Bundler() {}
 
 	public static void sendLocalized(Player player, String key) {
 		player.sendMessage(getLocalized(player, key));
@@ -38,7 +43,7 @@ public class Bundler {
 		String key,
 		Object... formatObjects
 	) {
-		return String.format(getLocalized(locale, key));
+		return String.format(getLocalized(locale, key), formatObjects);
 	}
 
 	public static String getLocalized(Locale locale, String key) {

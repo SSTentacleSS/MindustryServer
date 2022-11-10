@@ -29,7 +29,6 @@ import org.jline.widget.TailTipWidgets.TipType;
 import org.reflections.Reflections;
 
 public class ServerController implements ApplicationListener {
-	public Fi logFolder = Core.settings.getDataDirectory().child("logs/");
 
 	public ServerController(String[] args) {
 		Core.settings.defaults(
@@ -49,28 +48,25 @@ public class ServerController implements ApplicationListener {
 		handleInput();
 
 		new TailTipWidgets(
-			Main.IO.reader,
-			StateController.commandsRegistry.tailTips,
+			Main.getProgressiveLogger().getReader(),
+			StateController.getCommandsRegistry().tailTips,
 			0,
-			TipType.TAIL_TIP
+			TipType.COMBINED
 		)
-		.enable();
+			.enable();
 
 		Timer.schedule(
-			() -> Core.settings.forceSave(),
-			StateController.configSaveInterval,
-			StateController.configSaveInterval
+			Core.settings::forceSave,
+			StateController.getConfigSaveInterval(),
+			StateController.getConfigSaveInterval()
 		);
 
-		Core.app.post(
-			() -> {
-				loadAutosave();
-				loadPresetCommands(args);
-			}
-		);
+		Core.app.post(() -> {
+			loadAutosave();
+			loadPresetCommands(args);
+		});
 
 		registerEventListeners();
-
 		runEvent(new TriggerUpdate());
 	}
 
@@ -88,7 +84,7 @@ public class ServerController implements ApplicationListener {
 
 					Vars.state.set(State.playing);
 					Vars.netServer.openServer();
-				} catch (Throwable e) {
+				} catch (Exception e) {
 					Log.err(e);
 				}
 			}
@@ -115,9 +111,9 @@ public class ServerController implements ApplicationListener {
 			argCommands,
 			startupCommands
 		)) {
-			CommandResponse response = StateController.commandsRegistry.handleMessage(
-				command
-			);
+			CommandResponse response = StateController
+				.getCommandsRegistry()
+				.handleMessage(command);
 
 			if (response.type != ResponseType.valid) {
 				Log.err(
@@ -136,48 +132,46 @@ public class ServerController implements ApplicationListener {
 	@SuppressWarnings("unchecked")
 	public void registerEventListeners() {
 		getSubClasses(
-				Listener.class.getPackageName() + ".listeners",
-				Listener.class
-			)
-			.forEach(
-				eventClass -> {
-					try {
-						Listener<?> command = eventClass
-							.getConstructor()
-							.newInstance();
+			Listener.class.getPackageName() + ".listeners",
+			Listener.class
+		)
+			.forEach(eventClass -> {
+				try {
+					Listener<?> command = eventClass
+						.getConstructor()
+						.newInstance();
 
-						Events.on(
-							(Class<Object>) command.getListenerClass(),
-							event ->
-								((Listener<Object>) command).listener(event)
-						);
-					} catch (
-						NoSuchMethodException
-						| SecurityException
-						| InstantiationException
-						| IllegalAccessException
-						| IllegalArgumentException
-						| InvocationTargetException e
-					) {
-						return;
-					}
+					Events.on(
+						(Class<Object>) command.getListenerClass(),
+						((Listener<Object>) command)::listener
+					);
+				} catch (
+					NoSuchMethodException
+					| SecurityException
+					| InstantiationException
+					| IllegalAccessException
+					| IllegalArgumentException
+					| InvocationTargetException e
+				) {
+					return;
 				}
-			);
+			});
 	}
 
 	public void registerCommands() {
 		getSubClasses(
-				ServerRegistrableCommand.class.getPackageName(),
-				ServerRegistrableCommand.class
-			)
-			.forEach(
-				commandClass -> {
-					try {
-						ServerRegistrableCommand command = commandClass
-							.getConstructor()
-							.newInstance();
+			ServerRegistrableCommand.class.getPackageName(),
+			ServerRegistrableCommand.class
+		)
+			.forEach(commandClass -> {
+				try {
+					ServerRegistrableCommand command = commandClass
+						.getConstructor()
+						.newInstance();
 
-						StateController.commandsRegistry.register(
+					StateController
+						.getCommandsRegistry()
+						.register(
 							command.getName(),
 							command.getParams(),
 							command.getDescription(),
@@ -194,43 +188,42 @@ public class ServerController implements ApplicationListener {
 								}
 							}
 						);
-					} catch (
-						NoSuchMethodException
-						| SecurityException
-						| InstantiationException
-						| IllegalAccessException
-						| IllegalArgumentException
-						| InvocationTargetException e
-					) {
-						return;
-					}
+				} catch (
+					NoSuchMethodException
+					| SecurityException
+					| InstantiationException
+					| IllegalAccessException
+					| IllegalArgumentException
+					| InvocationTargetException e
+				) {
+					return;
 				}
-			);
+			});
 	}
 
 	public void handleInput() {
-		CompletableFuture<String> readFuture = Main.IO.read();
+		CompletableFuture<String> readFuture = Main
+			.getProgressiveLogger()
+			.read();
 
-		readFuture.handle(
-			(result, exception) -> {
-				if (exception != null) {
-					Log.err(exception);
-					return null;
-				}
-
-				handleCommandString(result);
-
-				handleInput();
+		readFuture.handle((result, exception) -> {
+			if (exception != null) {
+				Log.err(exception);
 				return null;
 			}
-		);
+
+			handleCommandString(result);
+
+			handleInput();
+			return null;
+		});
 	}
 
 	private void handleCommandString(String line) {
-		CommandsRegistry handler = StateController.commandsRegistry;
+		CommandsRegistry handler = StateController.getCommandsRegistry();
 		CommandResponse response = handler.handleMessage(line);
 
-		String message = new String();
+		String message = "";
 
 		switch (response.type) {
 			case manyArguments:

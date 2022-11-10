@@ -9,10 +9,9 @@ public class WorldLoadEvent implements Listener<EventType.WorldLoadEvent> {
 
 	@Override
 	public void listener(EventType.WorldLoadEvent event) {
-		StateController.autosaveCount.reset(
-			0,
-			Config.autosaveSpacing.num() * 60
-		);
+		StateController
+			.getAutosaveCount()
+			.reset(0, Config.autosaveSpacing.num() * 60f);
 	}
 
 	@Override

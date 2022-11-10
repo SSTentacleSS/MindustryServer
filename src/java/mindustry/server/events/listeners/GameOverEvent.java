@@ -20,7 +20,7 @@ public class GameOverEvent implements Listener<EventType.GameOverEvent> {
 
 	@Override
 	public void listener(mindustry.game.EventType.GameOverEvent event) {
-		if (StateController.inExtraRound) return;
+		if (StateController.isInExtraRound()) return;
 		if (Vars.state.rules.waves) {
 			Log.info(
 				"Game over! Reached wave @ with @ players online on map @.",
@@ -37,10 +37,13 @@ public class GameOverEvent implements Listener<EventType.GameOverEvent> {
 			);
 		}
 
-		Map map = StateController.nextMapOverride != null
-			? StateController.nextMapOverride
-			: Vars.maps.getNextMap(StateController.lastMode, Vars.state.map);
-		StateController.nextMapOverride = null;
+		Map map = StateController.getNextMapOverride() != null
+			? StateController.getNextMapOverride()
+			: Vars.maps.getNextMap(
+				StateController.getLastMode(),
+				Vars.state.map
+			);
+		StateController.setNextMapOverride(null);
 
 		if (map != null) {
 			Call.infoMessage(
@@ -62,7 +65,7 @@ public class GameOverEvent implements Listener<EventType.GameOverEvent> {
 				) +
 				"." +
 				"\nNew game begins in " +
-				StateController.roundExtraTime +
+				StateController.getRoundExtraTime() +
 				" seconds."
 			);
 
@@ -74,12 +77,11 @@ public class GameOverEvent implements Listener<EventType.GameOverEvent> {
 				Strings.stripColors(map.name())
 			);
 
-			play(
-				() ->
-					Vars.world.loadMap(
-						map,
-						map.applyRules(StateController.lastMode)
-					)
+			play(() ->
+				Vars.world.loadMap(
+					map,
+					map.applyRules(StateController.getLastMode())
+				)
 			);
 		} else {
 			Vars.netServer.kickAll(KickReason.gameover);
@@ -94,32 +96,37 @@ public class GameOverEvent implements Listener<EventType.GameOverEvent> {
 	}
 
 	public void play(Runnable runnable) {
-		StateController.inExtraRound = true;
-		StateController.serverTimer.scheduleTask(
-			new Task() {
+		StateController.setInExtraRound(true);
+		StateController
+			.getServerTimer()
+			.scheduleTask(
+				new Task() {
+					@Override
+					public void run() {
+						try {
+							WorldReloader reloader = new WorldReloader();
 
-				@Override
-				public void run() {
-					try {
-						WorldReloader reloader = new WorldReloader();
+							if (Vars.netClient == null) return;
+							reloader.begin();
+							runnable.run();
 
-						if (Vars.netClient == null) return;
-						reloader.begin();
-						runnable.run();
+							Vars.state.rules =
+								Vars.state.map.applyRules(
+									StateController.getLastMode()
+								);
+							Vars.logic.play();
 
-						Vars.state.rules =
-							Vars.state.map.applyRules(StateController.lastMode);
-						Vars.logic.play();
-
-						reloader.end();
-						StateController.inExtraRound = false;
-					} catch (MapException error) {
-						Log.err(error.map.name() + ": " + error.getMessage());
-						System.exit(1);
+							reloader.end();
+							StateController.setInExtraRound(false);
+						} catch (MapException error) {
+							Log.err(
+								error.map.name() + ": " + error.getMessage()
+							);
+							System.exit(1);
+						}
 					}
-				}
-			},
-			StateController.roundExtraTime
-		);
+				},
+				StateController.getRoundExtraTime()
+			);
 	}
 }

@@ -9,13 +9,8 @@ public class Say implements ServerRegistrableCommand {
 	@Override
 	public void listener(String[] args) throws Throwable {
 		if (Host.errorIfNotPlaying()) return; else {
-			Groups.player.forEach(
-				player ->
-					Bundler.sendLocalized(
-						player,
-						"commands.say.chat_say",
-						args[0]
-					)
+			Groups.player.forEach(player ->
+				Bundler.sendLocalized(player, "commands.say.chat_say", args[0])
 			);
 
 			Bundler.logLocalized(

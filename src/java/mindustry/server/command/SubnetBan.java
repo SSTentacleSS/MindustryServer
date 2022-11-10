@@ -6,6 +6,7 @@ import arc.util.Log.LogLevel;
 import mindustry.Vars;
 import mindustry.server.utils.Bundler;
 
+// TODO: Refactor
 public class SubnetBan implements ServerRegistrableCommand {
 
 	@Override

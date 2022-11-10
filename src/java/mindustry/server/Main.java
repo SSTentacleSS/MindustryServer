@@ -10,7 +10,6 @@ import mindustry.Vars;
 import mindustry.core.Logic;
 import mindustry.core.NetServer;
 import mindustry.core.Platform;
-import mindustry.ctype.Content;
 import mindustry.game.EventType;
 import mindustry.game.Gamemode;
 import mindustry.maps.Maps.ShuffleMode;
@@ -22,9 +21,10 @@ import mindustry.server.log.ProgressiveLogger;
 import mindustry.server.utils.Bundler;
 
 public class Main implements ApplicationListener {
-	public static String[] args;
-	public static HeadlessApplication application;
-	public static ProgressiveLogger IO = new ProgressiveLogger();
+
+	private static String[] args;
+	private static HeadlessApplication application;
+	private static ProgressiveLogger progressiveLogger = new ProgressiveLogger();
 
 	public static void main(String[] args) {
 		Runtime.getRuntime().addShutdownHook(new Thread(Main::shutdown));
@@ -35,7 +35,15 @@ public class Main implements ApplicationListener {
 
 	@Override
 	public void init() {
-		Log.logger = IO;
+		initStatic();
+		initCoreApp();
+
+		Vars.mods.eachClass(Mod::init);
+		Events.fire(new EventType.ServerLoadEvent());
+	}
+
+	public static void initStatic() {
+		Log.logger = progressiveLogger;
 		Core.settings.setDataDirectory(Core.files.local("config"));
 		Vars.loadLocales = false;
 		Vars.headless = true;
@@ -52,49 +60,57 @@ public class Main implements ApplicationListener {
 		if (Vars.mods.hasContentErrors()) {
 			Log.err("Error occurred loading mod content:");
 
-			for (LoadedMod mod : Vars.mods.list()) if (mod.hasContentErrors()) {
-				Log.err("| &ly[@]", mod.name);
+			Vars.mods
+				.list()
+				.copy()
+				.filter(LoadedMod::hasContentErrors)
+				.forEach(erroredMod -> {
+					Log.err("| &ly[@]", erroredMod.name);
 
-				for (Content content : mod.erroredContent) Log.err(
-					"| | &y@: &c@",
-					content.minfo.sourceFile.name(),
-					Strings
-						.getSimpleMessage(content.minfo.baseError)
-						.replace("\n", " ")
-				);
-			}
+					erroredMod.erroredContent.forEach(content ->
+						Log.err(
+							"| | &y@: &c@",
+							content.minfo.sourceFile.name(),
+							Strings
+								.getSimpleMessage(content.minfo.baseError)
+								.replace("\n", " ")
+						)
+					);
+				});
 
 			System.exit(1);
 		}
 
 		Vars.bases.load();
+	}
 
+	public static void initCoreApp() {
 		Core.app.addListener(
 			new ApplicationListener() {
-
+				@Override
 				public void update() {
 					Vars.asyncCore.begin();
 				}
 			}
 		);
 
-		Core.app.addListener(Vars.logic = new Logic());
-		Core.app.addListener(Vars.netServer = new NetServer());
+		Vars.logic = new Logic();
+		Vars.netServer = new NetServer();
+
+		Core.app.addListener(Vars.logic);
+		Core.app.addListener(Vars.netServer);
 		Core.app.addListener(new ServerController(args));
 		Core.app.addListener(
 			new ApplicationListener() {
-
+				@Override
 				public void update() {
 					Vars.asyncCore.end();
 				}
 			}
 		);
-
-		Vars.mods.eachClass(Mod::init);
-		Events.fire(new EventType.ServerLoadEvent());
 	}
 
-	public void initStateController() {
+	public static void initStateController() {
 		Vars.maps.setShuffleMode(
 			valueOf(
 				ShuffleMode.values(),
@@ -103,12 +119,13 @@ public class Main implements ApplicationListener {
 			)
 		);
 
-		StateController.lastMode =
+		StateController.setLastMode(
 			valueOf(
 				Gamemode.values(),
 				Core.settings.getString("lastServerMode", "survival"),
 				Gamemode.survival
-			);
+			)
+		);
 	}
 
 	public static void initServer() {
@@ -123,10 +140,10 @@ public class Main implements ApplicationListener {
 	public static void shutdown() {
 		Log.info(Bundler.getLocalized("server.shutdown"));
 
-		Events.fire(new ServerCloseEvent());
+		Events.fire(new ServerCloseEvent() {});
 
 		Vars.net.dispose();
-		IO.executor.shutdown();
+		progressiveLogger.getExecutor().shutdown();
 		Core.app.exit();
 	}
 
@@ -142,5 +159,17 @@ public class Main implements ApplicationListener {
 		}
 
 		return defaultValue;
+	}
+
+	public static String[] getArgs() {
+		return args;
+	}
+
+	public static HeadlessApplication getApplication() {
+		return application;
+	}
+
+	public static ProgressiveLogger getProgressiveLogger() {
+		return progressiveLogger;
 	}
 }

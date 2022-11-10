@@ -19,22 +19,17 @@ public class Load implements ServerRegistrableCommand {
 		if (!SaveIO.isSaveValid(file)) Bundler.logLocalized(
 			LogLevel.err,
 			"commands.load.no_save_data"
-		); else Core.app.post(
-			() -> {
-				try {
-					SaveIO.load(file);
-					Vars.state.rules.sector = null;
-					Bundler.logLocalized(LogLevel.info, "commands.load.loaded");
-					Vars.state.set(State.playing);
-					Vars.netServer.openServer();
-				} catch (Throwable error) {
-					Bundler.logLocalized(
-						LogLevel.err,
-						"commands.load.load_error"
-					);
-				}
+		); else Core.app.post(() -> {
+			try {
+				SaveIO.load(file);
+				Vars.state.rules.sector = null;
+				Bundler.logLocalized(LogLevel.info, "commands.load.loaded");
+				Vars.state.set(State.playing);
+				Vars.netServer.openServer();
+			} catch (Exception error) {
+				Bundler.logLocalized(LogLevel.err, "commands.load.load_error");
 			}
-		);
+		});
 	}
 
 	@Override

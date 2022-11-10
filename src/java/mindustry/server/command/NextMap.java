@@ -11,13 +11,12 @@ public class NextMap implements ServerRegistrableCommand {
 
 	@Override
 	public void listener(String[] args) throws Throwable {
-		Map nextMap = Vars
-			.maps.all()
-			.find(
-				map ->
-					Maps
-						.normalizeMapName(map.name())
-						.equalsIgnoreCase(Maps.normalizeMapName(args[0]))
+		Map nextMap = Vars.maps
+			.all()
+			.find(map ->
+				Maps
+					.normalizeMapName(map.name())
+					.equalsIgnoreCase(Maps.normalizeMapName(args[0]))
 			);
 
 		if (nextMap == null) Bundler.logLocalized(
@@ -25,7 +24,7 @@ public class NextMap implements ServerRegistrableCommand {
 			"commands.nextmap.map_not_found",
 			args[0]
 		); else {
-			StateController.nextMapOverride = nextMap;
+			StateController.setNextMapOverride(nextMap);
 			Bundler.logLocalized(
 				LogLevel.info,
 				"commands.nextmap.set",

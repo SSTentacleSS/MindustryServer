@@ -1,6 +1,7 @@
 package mindustry.server.command;
 
 import arc.util.Log.LogLevel;
+import java.util.List;
 import mindustry.Vars;
 import mindustry.gen.Groups;
 import mindustry.gen.Player;
@@ -10,15 +11,15 @@ public class Ban implements ServerRegistrableCommand {
 
 	@Override
 	public void listener(String[] args) throws Throwable {
-		if (args[0].equals("id")) {
-			Vars.netServer.admins.banPlayerID(args[1]);
-			Bundler.logLocalized(LogLevel.info, "commands.ban.banned");
-		} else if (args[0].equals("ip")) {
-			Vars.netServer.admins.banPlayerIP(args[1]);
+		if (List.of("id", "ip").contains(args[0])) {
+			if (args[0].equals("ip")) Vars.netServer.admins.banPlayerIP(
+				args[1]
+			); else Vars.netServer.admins.banPlayerID(args[1]);
+
 			Bundler.logLocalized(LogLevel.info, "commands.ban.banned");
 		} else if (args[0].equals("name")) {
-			Player player = Groups.player.find(
-				groupPlayer -> groupPlayer.name().equalsIgnoreCase(args[1])
+			Player player = Groups.player.find(groupPlayer ->
+				groupPlayer.name().equalsIgnoreCase(args[1])
 			);
 
 			if (player == null) Bundler.logLocalized(
@@ -33,8 +34,8 @@ public class Ban implements ServerRegistrableCommand {
 			return;
 		}
 
-		String name = Vars
-			.netServer.admins.findByName(args[1])
+		String name = Vars.netServer.admins
+			.findByName(args[1])
 			.first()
 			.lastName;
 

@@ -16,15 +16,15 @@ public class Kick implements ServerRegistrableCommand {
 		PlayerInfo playerInfo = Info.getPlayerInfoOrError(
 			args[0],
 			serverPlayerInfo ->
-				Groups.player.contains(
-					player -> player.name.equals(serverPlayerInfo.lastName)
+				Groups.player.contains(player ->
+					player.name.equals(serverPlayerInfo.lastName)
 				)
 		);
 
 		if (playerInfo == null) return;
 
-		Player kickPlayer = Groups.player.find(
-			player -> player.uuid().equals(playerInfo.id)
+		Player kickPlayer = Groups.player.find(player ->
+			player.uuid().equals(playerInfo.id)
 		);
 
 		if (kickPlayer == null) Bundler.logLocalized(

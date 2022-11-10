@@ -1,3 +1,3 @@
 package mindustry.server.events.emitters;
 
-public class ServerCloseEvent {}
+public interface ServerCloseEvent {}

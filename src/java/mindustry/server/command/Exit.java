@@ -11,8 +11,8 @@ public class Exit implements ServerRegistrableCommand {
 	public void listener(String[] args) throws Throwable {
 		if (args.length == 0 || Groups.player.size() == 0) System.exit(
 			0
-		); else if (args[0] == "quiet") {
-			PlayerLeaveEvent.quietExit = true;
+		); else if (args[0].equals("quiet")) {
+			PlayerLeaveEvent.setQuietExit(true);
 			Bundler.logLocalized(LogLevel.info, "commands.exit.quiet");
 		}
 	}

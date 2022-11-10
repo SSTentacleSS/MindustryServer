@@ -39,11 +39,10 @@ public class CommandsRegistry extends CommandHandler {
 			Pipe
 				.apply(parameter.name)
 				.pipe(text -> text.concat(parameter.variadic ? "..." : ""))
-				.pipe(
-					text ->
-						parameter.optional ? "[" + text + "]" : "<" + text + ">"
+				.pipe(text ->
+					parameter.optional ? "[" + text + "]" : "<" + text + ">"
 				)
-				.pipe(text -> parameters.add(text));
+				.pipe(parameters::add);
 		}
 
 		registeredCommands.add(command);
@@ -53,7 +52,8 @@ public class CommandsRegistry extends CommandHandler {
 	@Override
 	public void removeCommand(String commandName) {
 		tailTips.remove(commandName);
-		registeredCommands.removeIf(command -> command.text == commandName);
+		registeredCommands.removeIf(command -> command.text.equals(commandName)
+		);
 
 		super.removeCommand(commandName);
 	}

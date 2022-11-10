@@ -114,16 +114,14 @@ public class Info implements ServerRegistrableCommand {
 					", ",
 					Pipe
 						.apply(playersInfoSeq)
-						.pipe(
-							seq ->
-								seq.map(
-									userInfo ->
-										Bundler.getLocalized(
-											"commands.info.too_many_found.player_info",
-											userInfo.id,
-											userInfo.ips
-										)
+						.pipe(seq ->
+							seq.map(userInfo ->
+								Bundler.getLocalized(
+									"commands.info.too_many_found.player_info",
+									userInfo.id,
+									userInfo.ips
 								)
+							)
 						)
 						.result()
 				)

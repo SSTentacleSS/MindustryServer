@@ -15,16 +15,10 @@ public class Save implements ServerRegistrableCommand {
 
 		Fi file = Vars.saveDirectory.child(args[0] + "." + Vars.saveExtension);
 
-		Core.app.post(
-			() -> {
-				SaveIO.save(file);
-				Bundler.logLocalized(
-					LogLevel.info,
-					"commands.save.saved",
-					file
-				);
-			}
-		);
+		Core.app.post(() -> {
+			SaveIO.save(file);
+			Bundler.logLocalized(LogLevel.info, "commands.save.saved", file);
+		});
 	}
 
 	@Override

@@ -12,7 +12,9 @@ public class Help implements ServerRegistrableCommand {
 
 	@Override
 	public void listener(String[] args) throws Throwable {
-		Seq<Command> commands = StateController.commandsRegistry.getCommandList();
+		Seq<Command> commands = StateController
+			.getCommandsRegistry()
+			.getCommandList();
 
 		if (args.length == 0) {
 			Pipe
@@ -20,30 +22,26 @@ public class Help implements ServerRegistrableCommand {
 				.pipe(Bundler::getLocalized, commands.size)
 				.result(Log::info);
 
-			commands.forEach(
-				command -> {
-					Log.info(helpStringFromCommand(command));
-				}
-			);
+			commands.forEach(command -> {
+				Log.info(helpStringFromCommand(command));
+			});
 		} else {
 			Pipe
 				.apply(
-					commands.find(
-						command -> command.text.equalsIgnoreCase(args[0])
+					commands.find(command ->
+						command.text.equalsIgnoreCase(args[0])
 					)
 				)
-				.result(
-					command -> {
-						if (command == null) Bundler.logLocalized(
-							LogLevel.err,
-							"commands.help.not_found",
-							args[0]
-						); else {
-							Log.info(command.text + ":");
-							Log.info(helpStringFromCommand(command));
-						}
+				.result(command -> {
+					if (command == null) Bundler.logLocalized(
+						LogLevel.err,
+						"commands.help.not_found",
+						args[0]
+					); else {
+						Log.info(command.text + ":");
+						Log.info(helpStringFromCommand(command));
 					}
-				);
+				});
 		}
 	}
 

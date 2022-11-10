@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicReference;
 import mindustry.server.utils.Colors;
 import mindustry.server.utils.Pipe;
 import org.jline.reader.LineReader;
@@ -20,19 +21,20 @@ import org.jline.terminal.TerminalBuilder;
 import org.jline.utils.AttributedStyle;
 
 public class ProgressiveLogger implements LogHandler {
-	public static SimpleDateFormat dateFormat = new SimpleDateFormat(
-		"[dd-MM-yyyy HH:mm:ss.SSS]"
+
+	private static final AtomicReference<SimpleDateFormat> dateFormat = new AtomicReference<>(
+		new SimpleDateFormat("[dd-MM-yyyy HH:mm:ss.SSS]")
 	);
 
-	public volatile String inputPrompt = Colors.applyStyle(
+	private volatile String inputPrompt = Colors.applyStyle(
 		"[Server] |> ",
 		AttributedStyle.BOLD.foreground(170, 255, 50)
 	);
 
-	public ExecutorService executor = Executors.newSingleThreadExecutor();
-	public SystemCompleter systemCompleter = new SystemCompleter();
-	public Terminal terminal;
-	public LineReader reader;
+	private ExecutorService executor = Executors.newSingleThreadExecutor();
+	private SystemCompleter systemCompleter = new SystemCompleter();
+	private Terminal terminal;
+	private LineReader reader;
 
 	public ProgressiveLogger() {
 		init();
@@ -48,10 +50,12 @@ public class ProgressiveLogger implements LogHandler {
 					.system(true)
 					.build();
 
-			reader = LineReaderBuilder.builder()
-				.terminal(terminal)
-				.appName("Mindustry Server")
-				.build();
+			reader =
+				LineReaderBuilder
+					.builder()
+					.terminal(terminal)
+					.appName("Mindustry Server")
+					.build();
 			terminal.enterRawMode();
 		} catch (IOException e) {
 			Log.err(e);
@@ -60,7 +64,7 @@ public class ProgressiveLogger implements LogHandler {
 
 	@Override
 	public void log(LogLevel level, String text) {
-		String renderedText = new String();
+		String renderedText = "";
 
 		switch (level) {
 			case debug:
@@ -132,12 +136,36 @@ public class ProgressiveLogger implements LogHandler {
 	public static String addTimestamp(String text) {
 		return Pipe
 			.apply(new Date())
-			.pipe(date -> dateFormat.format(date))
+			.pipe(date -> dateFormat.get().format(date))
 			.pipe(
 				Colors::applyStyle,
 				AttributedStyle.BOLD.foreground(128, 128, 128)
 			)
 			.pipe(string -> string.concat(text))
 			.result();
+	}
+
+	public static AtomicReference<SimpleDateFormat> getDateformat() {
+		return dateFormat;
+	}
+
+	public String getInputPrompt() {
+		return inputPrompt;
+	}
+
+	public ExecutorService getExecutor() {
+		return executor;
+	}
+
+	public SystemCompleter getSystemCompleter() {
+		return systemCompleter;
+	}
+
+	public Terminal getTerminal() {
+		return terminal;
+	}
+
+	public LineReader getReader() {
+		return reader;
 	}
 }

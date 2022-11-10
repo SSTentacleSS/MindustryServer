@@ -5,6 +5,8 @@ import org.jline.utils.AttributedStyle;
 
 public final class Colors {
 
+	private Colors() {}
+
 	public static String applyStyle(String text, AttributedStyle style) {
 		return new AttributedStringBuilder().style(style).append(text).toAnsi();
 	}

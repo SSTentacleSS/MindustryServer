@@ -21,9 +21,9 @@ public class TriggerUpdate implements Emitter<EventType.Trigger> {
 		return () -> {
 			if (Vars.state.isPlaying() && Config.autosave.bool()) {
 				if (
-					StateController.autosaveCount.get(
-						Config.autosaveSpacing.num() * 60
-					)
+					StateController
+						.getAutosaveCount()
+						.get(Config.autosaveSpacing.num() * 60f)
 				) {
 					int max = Config.autosaveAmount.num();
 
@@ -34,12 +34,13 @@ public class TriggerUpdate implements Emitter<EventType.Trigger> {
 								? "unknown"
 								: Vars.state.map.file.nameWithoutExtension()
 						).replace(" ", "_");
-					String date = ProgressiveLogger.dateFormat.format(
-						LocalDateTime.now()
-					);
+					String date = ProgressiveLogger
+						.getDateformat()
+						.get()
+						.format(LocalDateTime.now());
 
-					Seq<Fi> autosaves = Vars.saveDirectory.findAll(
-						f -> f.name().startsWith("auto_")
+					Seq<Fi> autosaves = Vars.saveDirectory.findAll(f ->
+						f.name().startsWith("auto_")
 					);
 					autosaves.sort(f -> -f.lastModified());
 
@@ -63,7 +64,7 @@ public class TriggerUpdate implements Emitter<EventType.Trigger> {
 					try {
 						SaveIO.save(file);
 						Log.info("Autosave completed.");
-					} catch (Throwable e) {
+					} catch (Exception e) {
 						Log.err("Autosave failed.", e);
 					}
 				}

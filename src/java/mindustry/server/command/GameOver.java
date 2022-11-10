@@ -18,7 +18,7 @@ public class GameOver implements ServerRegistrableCommand {
 		}
 
 		Bundler.logLocalized(LogLevel.info, "commands.gameover.core_destroyed");
-		StateController.inExtraRound = false;
+		StateController.setInExtraRound(false);
 		Events.fire(new EventType.GameOverEvent(Team.crux));
 	}
 

@@ -23,15 +23,15 @@ public class Pipe<A> {
 	}
 
 	public static <A> Pipe<A> apply(A object) {
-		return new Pipe<A>(object);
+		return new Pipe<>(object);
 	}
 
 	public <R> Pipe<R> pipe(Function<A, R> func) {
-		return new Pipe<R>(func.apply(object));
+		return new Pipe<>(func.apply(object));
 	}
 
 	public <R, B> Pipe<R> pipe(BiFunction<A, B, R> func, B argObject1) {
-		return new Pipe<R>(func.apply(object, argObject1));
+		return new Pipe<>(func.apply(object, argObject1));
 	}
 
 	public <R, B, C> Pipe<R> pipe(
@@ -39,7 +39,7 @@ public class Pipe<A> {
 		B argObject1,
 		C argObject2
 	) {
-		return new Pipe<R>(func.apply(object, argObject1, argObject2));
+		return new Pipe<>(func.apply(object, argObject1, argObject2));
 	}
 
 	public <R, B, C, D> Pipe<R> pipe(
@@ -48,7 +48,7 @@ public class Pipe<A> {
 		C argObject2,
 		D argObject3
 	) {
-		return new Pipe<R>(
+		return new Pipe<>(
 			func.apply(object, argObject1, argObject2, argObject3)
 		);
 	}

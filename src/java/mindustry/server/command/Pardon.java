@@ -18,7 +18,6 @@ public class Pardon implements ServerRegistrableCommand {
 			"commands.pardon.pardoned",
 			playerInfo.lastName
 		);
-		return;
 	}
 
 	@Override

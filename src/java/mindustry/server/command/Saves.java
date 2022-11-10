@@ -9,8 +9,8 @@ public class Saves implements ServerRegistrableCommand {
 
 	@Override
 	public void listener(String[] args) throws Throwable {
-		Fi[] saves = Vars.saveDirectory.list(
-			file -> file.getName().equals(Vars.saveExtension)
+		Fi[] saves = Vars.saveDirectory.list(file ->
+			file.getName().equals(Vars.saveExtension)
 		);
 
 		if (saves.length == 0) Bundler.logLocalized(

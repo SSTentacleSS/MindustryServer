@@ -5,9 +5,9 @@ This project aims to create an improved version of the official version of the s
 # Roadmap
 
 - [x] Parallel I/O (preventing input from being mixed up with output when outputting to the console)
-![](docs/IO.gif)
+      ![](docs/IO.gif)
 - [x] Command input help
-![](docs/InputHelper.gif)
+      ![](docs/InputHelper.gif)
 - [x] Complete rewriting of the standard Abuben handler
 - [ ] Dynamic assets loading
 
@@ -23,8 +23,8 @@ or
 
 # How to use
 
-* For users:
-    + Put mods in config/mods (Optional)
-    + Run server via `java -jar ./server.jar` in the folder that contains this file
-* For developers:
-    + **If necessary, you can connect this repository via jitpack as a library, to be able to use ServerCloseEvent, direct access to server management, libraries and utilities**
+- For users:
+  - Put mods in config/mods (Optional)
+  - Run server via `java -jar ./server.jar` in the folder that contains this file
+- For developers:
+  - **If necessary, you can connect this repository via jitpack as a library, to be able to use ServerCloseEvent, direct access to server management, libraries and utilities**
