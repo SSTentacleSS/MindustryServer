@@ -6,7 +6,7 @@
 
   <groupId>mindustry</groupId>
   <artifactId>server</artifactId>
-  <version>1.5</version>
+  <version>1.5.4</version>
 
   <name>server</name>
   <url>https://github.com/SSTentacleSS/MindustryServer</url>
@@ -23,7 +23,7 @@
     <maven.compiler.source>8</maven.compiler.source>
     <maven.compiler.target>8</maven.compiler.target>
 
-    <properies.mindustryVersion>140.2</properies.mindustryVersion>
+    <properies.mindustryVersion>140.3</properies.mindustryVersion>
     <properies.shortVersion>7</properies.shortVersion>
 
     <mindustryVersion>v${properies.mindustryVersion}</mindustryVersion>
