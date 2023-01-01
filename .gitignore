@@ -2,4 +2,6 @@
 .idea/
 config/
 target/
+.bloop/
+.metals/
 dependency-reduced-pom.xml
