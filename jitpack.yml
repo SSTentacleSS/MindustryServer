@@ -2,4 +2,4 @@ jdk:
   - openjdk17
 install:
   - echo "Сборка плагина запущена"
-  - - mvn install -DskipTests
+  - mvn install -DskipTests
