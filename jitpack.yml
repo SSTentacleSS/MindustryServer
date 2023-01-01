@@ -1,0 +1,5 @@
+jdk:
+  - zulu17
+install:
+  - echo "Сборка плагина запущена"
+  - mvn package
