@@ -36,7 +36,7 @@ public class Status implements ServerRegistrableCommand {
 				LogLevel.info,
 				"commands.status.server_performance",
 				Core.graphics.getFramesPerSecond(),
-				Core.app.getJavaHeap()
+				Core.app.getJavaHeap() / 1024 / 1024
 			);
 
 			if (Groups.player.size() <= 0) Bundler.logLocalized(
