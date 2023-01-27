@@ -199,6 +199,11 @@ public class ServerController implements ApplicationListener {
 					return;
 				}
 			});
+
+		Vars.mods.eachClass(modInstance -> modInstance.registerServerCommands(
+			StateController
+				.getCommandsRegistry()
+		));
 	}
 
 	public void handleInput() {

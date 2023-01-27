@@ -94,11 +94,8 @@ public class Main implements ApplicationListener {
 			}
 		);
 
-		Vars.logic = new Logic();
-		Vars.netServer = new NetServer();
-
-		Core.app.addListener(Vars.logic);
-		Core.app.addListener(Vars.netServer);
+		Core.app.addListener(Vars.logic = new Logic());
+		Core.app.addListener(Vars.netServer = new NetServer());
 		Core.app.addListener(new ServerController(args));
 		Core.app.addListener(
 			new ApplicationListener() {
