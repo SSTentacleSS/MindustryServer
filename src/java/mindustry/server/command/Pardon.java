@@ -3,6 +3,7 @@ package mindustry.server.command;
 import arc.util.Log.LogLevel;
 import mindustry.net.Administration.PlayerInfo;
 import mindustry.server.utils.Bundler;
+import mindustry.Vars;
 
 public class Pardon implements ServerRegistrableCommand {
 
@@ -13,6 +14,7 @@ public class Pardon implements ServerRegistrableCommand {
 		if (playerInfo == null) return;
 
 		playerInfo.lastKicked = 0;
+		Vars.netServer.admins.kickedIPs.remove(info.lastIP);
 		Bundler.logLocalized(
 			LogLevel.info,
 			"commands.pardon.pardoned",
