@@ -14,7 +14,7 @@ public class Pardon implements ServerRegistrableCommand {
 		if (playerInfo == null) return;
 
 		playerInfo.lastKicked = 0;
-		Vars.netServer.admins.kickedIPs.remove(info.lastIP);
+		Vars.netServer.admins.kickedIPs.remove(playerInfo.lastIP);
 		Bundler.logLocalized(
 			LogLevel.info,
 			"commands.pardon.pardoned",
